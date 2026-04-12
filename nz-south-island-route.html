@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>紐西蘭南島 14 日自駕路線</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Serif TC', serif;
+    background: #0e1a14;
+    color: #e8f0eb;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  header {
+    padding: 14px 24px;
+    background: #0e1a14;
+    border-bottom: 1px solid #2a3d2e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    z-index: 1000;
+  }
+
+  header h1 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #c8e6c9;
+  }
+
+  header p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: #6a9970;
+    letter-spacing: 0.05em;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    padding: 10px 24px;
+    background: #111e16;
+    border-bottom: 1px solid #1e3022;
+    flex-shrink: 0;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 20px;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .legend-item:hover {
+    background: #1e3022;
+    border-color: #2a4030;
+  }
+
+  .legend-item.active {
+    background: #1a2e1e;
+    border-color: #3a5a3e;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: #a0c4a5;
+    white-space: nowrap;
+  }
+
+  #map {
+    flex: 1;
+    width: 100%;
+  }
+
+  /* Custom marker styles */
+  .day-marker {
+    background: transparent;
+    border: none;
+  }
+
+  .marker-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .marker-pin {
+    width: 36px;
+    height: 36px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+    border: 2px solid rgba(255,255,255,0.3);
+  }
+
+  .marker-pin span {
+    transform: rotate(45deg);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .marker-tail {
+    width: 2px;
+    height: 8px;
+    background: rgba(255,255,255,0.4);
+    margin-top: 0;
+  }
+
+  /* Leaflet popup custom */
+  .leaflet-popup-content-wrapper {
+    background: #111e16;
+    color: #c8e6c9;
+    border: 1px solid #2a4030;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    font-family: 'Noto Serif TC', serif;
+  }
+
+  .leaflet-popup-tip {
+    background: #111e16;
+  }
+
+  .leaflet-popup-content {
+    margin: 12px 16px;
+    min-width: 160px;
+  }
+
+  .popup-day {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: #6a9970;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .popup-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #c8e6c9;
+    margin-bottom: 4px;
+  }
+
+  .popup-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: #7ab87f;
+  }
+
+  .popup-note {
+    margin-top: 6px;
+    font-size: 0.75rem;
+    color: #8ab890;
+    line-height: 1.5;
+    border-top: 1px solid #1e3022;
+    padding-top: 6px;
+  }
+
+  .leaflet-control-attribution {
+    background: rgba(14,26,20,0.85) !important;
+    color: #3a5a3e !important;
+  }
+
+  .leaflet-control-attribution a {
+    color: #5a8a5e !important;
+  }
+
+  .leaflet-control-zoom a {
+    background: #111e16 !important;
+    color: #c8e6c9 !important;
+    border-color: #2a4030 !important;
+  }
+
+  .leaflet-control-zoom a:hover {
+    background: #1e3022 !important;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🇳🇿 紐西蘭南島 14 日自駕</h1>
+    <p>SOUTH ISLAND · 順時鐘環島 · 約 1,800 KM · 4/30 – 5/13</p>
+  </div>
+  <div style="text-align:right">
+    <p style="color:#c8e6c9;font-size:0.75rem;">點擊圖例篩選 · 點擊標記查看詳情</p>
+  </div>
+</header>
+
+<div class="legend" id="legend"></div>
+
+<div id="map"></div>
+
+<script>
+// ── 資料定義 ─────────────────────────────────────────────
+const DAYS = [
+  {
+    day: 2,
+    label: 'Day 2',
+    date: '4/30',
+    name: '基督城',
+    lat: -43.532, lng: 172.636,
+    note: '抵達 · 租車 · 採購補給',
+    nights: 1
+  },
+  {
+    day: 3,
+    label: 'Day 3',
+    date: '5/1',
+    name: '蒂卡波湖',
+    lat: -44.004, lng: 170.476,
+    note: '湖邊散步 · 炸魚薯條 · 夜拍星空',
+    nights: 1
+  },
+  {
+    day: 4,
+    label: 'Day 4',
+    date: '5/2',
+    name: '庫克山',
+    lat: -43.736, lng: 170.097,
+    note: 'Lake Pukaki · Hooker Valley 步道 10km · 鮭魚店',
+    nights: 1
+  },
+  {
+    day: 5,
+    label: 'Day 5–6',
+    date: '5/3–4',
+    name: '瓦納卡',
+    lat: -44.694, lng: 169.141,
+    note: '塔斯曼冰川直升機 · That Wānaka Tree · Lake Hāwea（住 2 晚）',
+    nights: 2
+  },
+  {
+    day: 7,
+    label: 'Day 7',
+    date: '5/5',
+    name: '皇后鎮',
+    lat: -45.030, lng: 168.661,
+    note: '途經箭鎮 · Skyline 纜車 · 市區閒逛（住 2 晚）',
+    nights: 2
+  },
+  {
+    day: 9,
+    label: 'Day 9',
+    date: '5/7',
+    name: 'Fox Glacier',
+    lat: -43.462, lng: 170.009,
+    note: '長途 5hr · 途經瓦納卡 · Lake Hāwea · Haast',
+    nights: 1
+  },
+  {
+    day: 10,
+    label: 'Day 10',
+    date: '5/8',
+    name: 'Hokitika',
+    lat: -42.715, lng: 170.968,
+    note: 'Sunset Point 夕陽 · Glow Worm Dell 螢火蟲',
+    nights: 1
+  },
+  {
+    day: 11,
+    label: 'Day 11',
+    date: '5/9',
+    name: '基督城（返）',
+    lat: -43.540, lng: 172.620,
+    note: '途經 Arthur\'s Pass · Cave Stream · Castle Hill',
+    nights: 2
+  },
+  {
+    day: 12,
+    label: 'Day 12',
+    date: '5/10',
+    name: '奧馬魯',
+    lat: -45.097, lng: 170.971,
+    note: 'Ōamaru Penguins 看企鵝上岸（17:20）',
+    nights: 1
+  },
+  {
+    day: 13,
+    label: 'Day 13',
+    date: '5/11',
+    name: '摩拉基→基督城',
+    lat: -45.345, lng: 170.826,
+    note: '摩拉基圓石海灘 · 回基督城',
+    nights: 0
+  },
+  {
+    day: 14,
+    label: 'Day 14–15',
+    date: '5/12–13',
+    name: '基督城（離境）',
+    lat: -43.488, lng: 172.537,
+    note: '採購伴手禮 · 還車 · 飛離',
+    nights: 0
+  }
+];
+
+// 每段路線的顏色（共14天分段）
+const COLORS = [
+  '#4ade80', // Day2→3  綠
+  '#34d399', // Day3→4  翠
+  '#22d3ee', // Day4→5  青
+  '#60a5fa', // Day5→7  藍
+  '#a78bfa', // Day7→9  紫
+  '#f472b6', // Day9→10 粉
+  '#fb923c', // Day10→11 橙
+  '#facc15', // Day11→12 黃
+  '#f87171', // Day12→13 紅
+  '#e879f9', // Day13→14 洋紅
+];
+
+// 路線段定義（from index → to index，搭配顏色）
+const SEGMENTS = [
+  { from: 0, to: 1,  color: COLORS[0], label: 'Day 2→3' },
+  { from: 1, to: 2,  color: COLORS[1], label: 'Day 3→4' },
+  { from: 2, to: 3,  color: COLORS[2], label: 'Day 4→5' },
+  { from: 3, to: 4,  color: COLORS[3], label: 'Day 5→7' },
+  { from: 4, to: 5,  color: COLORS[4], label: 'Day 7→9' },
+  { from: 5, to: 6,  color: COLORS[5], label: 'Day 9→10' },
+  { from: 6, to: 7,  color: COLORS[6], label: 'Day 10→11' },
+  { from: 7, to: 8,  color: COLORS[7], label: 'Day 11→12' },
+  { from: 8, to: 9,  color: COLORS[8], label: 'Day 12→13' },
+  { from: 9, to: 10, color: COLORS[9], label: 'Day 13→14' },
+];
+
+// ── 地圖初始化 ──────────────────────────────────────────
+const map = L.map('map', {
+  center: [-43.8, 170.5],
+  zoom: 7,
+  zoomControl: true,
+  attributionControl: true
+});
+
+// 深色底圖（Carto Dark Matter）
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap contributors © CARTO',
+  subdomains: 'abcd',
+  maxZoom: 19
+}).addTo(map);
+
+// ── 繪製路線 ────────────────────────────────────────────
+const polylines = [];
+
+SEGMENTS.forEach((seg, i) => {
+  const from = DAYS[seg.from];
+  const to   = DAYS[seg.to];
+
+  const line = L.polyline(
+    [[from.lat, from.lng], [to.lat, to.lng]],
+    {
+      color: seg.color,
+      weight: 3.5,
+      opacity: 0.85,
+      dashArray: null,
+    }
+  ).addTo(map);
+
+  // 箭頭效果：在線段中點加個方向小三角（用 marker 模擬）
+  const midLat = (from.lat + to.lat) / 2;
+  const midLng = (from.lng + to.lng) / 2;
+
+  // 計算角度
+  const dLat = to.lat - from.lat;
+  const dLng = to.lng - from.lng;
+  const angle = Math.atan2(dLng, dLat) * 180 / Math.PI;
+
+  const arrowIcon = L.divIcon({
+    html: `<div style="
+      width:0; height:0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 10px solid ${seg.color};
+      transform: rotate(${angle}deg);
+      opacity: 0.9;
+    "></div>`,
+    className: '',
+    iconSize: [10, 10],
+    iconAnchor: [5, 5]
+  });
+
+  L.marker([midLat, midLng], { icon: arrowIcon, interactive: false }).addTo(map);
+
+  polylines.push({ line, seg });
+});
+
+// ── 繪製住宿標記 ────────────────────────────────────────
+// 每個住宿點使用對應的「出發段」顏色
+const markerColors = [
+  COLORS[0],  // Day2 基督城
+  COLORS[1],  // Day3 蒂卡波
+  COLORS[2],  // Day4 庫克山
+  COLORS[3],  // Day5 瓦納卡
+  COLORS[4],  // Day7 皇后鎮
+  COLORS[5],  // Day9 Fox Glacier
+  COLORS[6],  // Day10 Hokitika
+  COLORS[7],  // Day11 基督城（返）
+  COLORS[8],  // Day12 奧馬魯
+  COLORS[9],  // Day13 摩拉基
+  '#e879f9',  // Day14 基督城（離境）
+];
+
+DAYS.forEach((d, i) => {
+  const color = markerColors[i] || '#ffffff';
+
+  const icon = L.divIcon({
+    className: 'day-marker',
+    html: `
+      <div class="marker-inner">
+        <div class="marker-pin" style="background:${color}22; border-color:${color}88;">
+          <span style="color:${color}">${d.label.replace('Day ','D')}</span>
+        </div>
+        <div class="marker-tail" style="background:${color}66;"></div>
+      </div>
+    `,
+    iconSize: [50, 52],
+    iconAnchor: [25, 52],
+    popupAnchor: [0, -54]
+  });
+
+  const nightStr = d.nights === 2 ? '（住 2 晚）' : d.nights === 1 ? '（住 1 晚）' : '';
+
+  L.marker([d.lat, d.lng], { icon })
+    .bindPopup(`
+      <div class="popup-day">${d.label} · ${d.date}</div>
+      <div class="popup-title">${d.name} ${nightStr}</div>
+      <div class="popup-note">${d.note}</div>
+    `)
+    .addTo(map);
+});
+
+// ── 圖例 ────────────────────────────────────────────────
+const legendEl = document.getElementById('legend');
+
+SEGMENTS.forEach((seg, i) => {
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  item.innerHTML = `
+    <div class="legend-dot" style="background:${seg.color};box-shadow:0 0 6px ${seg.color}88;"></div>
+    <span class="legend-label">${seg.label}</span>
+  `;
+  item.addEventListener('click', () => {
+    const line = polylines[i].line;
+    const isOn = line.options.opacity > 0.1;
+    line.setStyle({ opacity: isOn ? 0.08 : 0.85, weight: isOn ? 1.5 : 3.5 });
+    item.classList.toggle('active', !isOn);
+  });
+  legendEl.appendChild(item);
+});
+
+// ── 自動縮放到所有點 ────────────────────────────────────
+const bounds = L.latLngBounds(DAYS.map(d => [d.lat, d.lng]));
+map.fitBounds(bounds, { padding: [40, 40] });
+</script>
+</body>
+</html>
