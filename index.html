@@ -29,182 +29,184 @@
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
-    z-index: 1000;
   }
-
-  header h1 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: #c8e6c9;
-  }
-
-  header p {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: #6a9970;
-    letter-spacing: 0.05em;
-  }
+  header h1 { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.08em; color: #c8e6c9; }
+  header p  { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #6a9970; letter-spacing: 0.05em; }
 
   .legend {
     display: flex;
     flex-wrap: wrap;
     gap: 6px 14px;
-    padding: 10px 24px;
+    padding: 8px 24px;
     background: #111e16;
     border-bottom: 1px solid #1e3022;
     flex-shrink: 0;
+    align-items: center;
+  }
+
+  .legend-divider {
+    width: 1px; height: 18px;
+    background: #2a4030;
+    margin: 0 4px;
   }
 
   .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    padding: 3px 8px;
-    border-radius: 20px;
-    transition: background 0.2s;
-    border: 1px solid transparent;
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer; padding: 3px 8px; border-radius: 20px;
+    transition: background 0.2s; border: 1px solid transparent;
+    user-select: none;
   }
+  .legend-item:hover { background: #1e3022; border-color: #2a4030; }
+  .legend-item.dimmed .legend-label { opacity: 0.35; }
+  .legend-item.dimmed .legend-dot  { opacity: 0.35; }
 
-  .legend-item:hover {
-    background: #1e3022;
-    border-color: #2a4030;
-  }
+  .legend-dot   { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .legend-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #a0c4a5; white-space: nowrap; }
 
-  .legend-item.active {
+  .legend-house {
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer; padding: 3px 8px; border-radius: 20px;
+    transition: background 0.2s; border: 1px solid #2a4030;
     background: #1a2e1e;
-    border-color: #3a5a3e;
+    user-select: none;
   }
+  .legend-house:hover { background: #243824; }
+  .legend-house.dimmed .legend-label { opacity: 0.35; }
+  .legend-house span { font-size: 0.75rem; }
 
-  .legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  #map { flex: 1; width: 100%; }
 
-  .legend-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: #a0c4a5;
-    white-space: nowrap;
-  }
-
-  #map {
-    flex: 1;
-    width: 100%;
-  }
-
-  /* Custom marker styles */
-  .day-marker {
-    background: transparent;
-    border: none;
-  }
-
-  .marker-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
+  /* Day 標記 */
+  .day-marker { background: transparent; border: none; }
+  .marker-inner { display: flex; flex-direction: column; align-items: center; }
   .marker-pin {
-    width: 36px;
-    height: 36px;
+    width: 38px; height: 38px;
     border-radius: 50% 50% 50% 0;
     transform: rotate(-45deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     box-shadow: 0 3px 10px rgba(0,0,0,0.5);
-    border: 2px solid rgba(255,255,255,0.3);
+    border: 2px solid rgba(255,255,255,0.25);
   }
-
   .marker-pin span {
     transform: rotate(45deg);
     font-family: 'DM Mono', monospace;
-    font-size: 0.55rem;
-    font-weight: 500;
-    color: #fff;
-    text-align: center;
-    line-height: 1.1;
+    font-size: 0.52rem; font-weight: 500; color: #fff;
+    text-align: center; line-height: 1.2; white-space: nowrap;
+  }
+  .marker-tail { width: 2px; height: 8px; background: rgba(255,255,255,0.35); }
+
+  /* 住宿標記 */
+  .house-marker { background: transparent; border: none; }
+  .house-bubble {
+    background: #1a2e1e;
+    border: 1.5px solid #4ade8088;
+    border-radius: 8px;
+    padding: 3px 7px;
+    display: flex; align-items: center; gap: 4px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.5);
     white-space: nowrap;
   }
-
-  .marker-tail {
-    width: 2px;
-    height: 8px;
-    background: rgba(255,255,255,0.4);
-    margin-top: 0;
+  .house-bubble .house-icon { font-size: 0.75rem; }
+  .house-bubble .house-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; color: #a0d4a5; line-height: 1;
+  }
+  .house-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #4ade8088;
   }
 
-  /* Leaflet popup custom */
+  /* Popup 共用 */
   .leaflet-popup-content-wrapper {
-    background: #111e16;
-    color: #c8e6c9;
-    border: 1px solid #2a4030;
-    border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    background: #0f1d13; color: #c8e6c9;
+    border: 1px solid #2a4030; border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.7);
     font-family: 'Noto Serif TC', serif;
+    max-height: 70vh; overflow-y: auto;
+  }
+  .leaflet-popup-tip { background: #0f1d13; }
+  .leaflet-popup-content { margin: 0 !important; width: 260px !important; }
+
+  .popup-header { padding: 14px 16px 10px; border-bottom: 1px solid #1e3022; }
+  .popup-day-badge {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    padding: 2px 8px; border-radius: 20px;
+    display: inline-block; margin-bottom: 6px; letter-spacing: 0.06em;
+  }
+  .popup-title { font-size: 1rem; font-weight: 700; color: #e8f5e9; line-height: 1.3; }
+  .popup-meta  { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: #7ab87f; margin-top: 2px; }
+
+  .popup-section { padding: 10px 16px; border-bottom: 1px solid #1a2e1e; }
+  .popup-section:last-of-type { border-bottom: none; }
+  .popup-section-title {
+    font-family: 'DM Mono', monospace; font-size: 0.58rem;
+    color: #5a8a5e; letter-spacing: 0.1em; margin-bottom: 6px; text-transform: uppercase;
   }
 
-  .leaflet-popup-tip {
-    background: #111e16;
-  }
+  .popup-highlights { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .popup-highlights li { font-size: 0.78rem; color: #b2d9b5; line-height: 1.4; }
 
-  .leaflet-popup-content {
-    margin: 12px 16px;
-    min-width: 160px;
+  .popup-schedule { display: flex; flex-direction: column; gap: 5px; }
+  .schedule-row  { display: flex; gap: 10px; align-items: flex-start; }
+  .schedule-time {
+    font-family: 'DM Mono', monospace; font-size: 0.64rem;
+    color: #6a9970; white-space: nowrap; padding-top: 1px; min-width: 44px;
   }
+  .schedule-event { font-size: 0.76rem; color: #b2d9b5; line-height: 1.4; }
 
-  .popup-day {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: #6a9970;
-    letter-spacing: 0.08em;
-    margin-bottom: 4px;
+  /* 住宿資訊區塊 */
+  .popup-accom {
+    display: flex; flex-direction: column; gap: 6px;
   }
-
-  .popup-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #c8e6c9;
-    margin-bottom: 4px;
+  .accom-row {
+    display: flex; align-items: flex-start; gap: 8px;
   }
-
-  .popup-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: #7ab87f;
+  .accom-icon { font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
+  .accom-info { display: flex; flex-direction: column; gap: 2px; }
+  .accom-name { font-size: 0.8rem; color: #b2d9b5; line-height: 1.3; }
+  .accom-nights { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #6a9970; }
+  .accom-map-link {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    color: #4ade80; text-decoration: none;
+    margin-top: 2px;
+    transition: color 0.2s;
   }
+  .accom-map-link:hover { color: #86efac; }
 
-  .popup-note {
-    margin-top: 6px;
-    font-size: 0.75rem;
-    color: #8ab890;
-    line-height: 1.5;
+  .popup-notion-link {
+    display: block; text-align: center;
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    color: #6a9970; padding: 10px; text-decoration: none;
     border-top: 1px solid #1e3022;
-    padding-top: 6px;
+    transition: color 0.2s, background 0.2s;
+    border-radius: 0 0 10px 10px;
   }
+  .popup-notion-link:hover { color: #c8e6c9; background: #1a2e1e; }
 
-  .leaflet-control-attribution {
-    background: rgba(14,26,20,0.85) !important;
-    color: #3a5a3e !important;
+  /* 住宿 popup */
+  .house-popup-header {
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid #1e3022;
+    display: flex; align-items: center; gap: 8px;
   }
+  .house-popup-icon { font-size: 1.4rem; }
+  .house-popup-day  { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #6a9970; }
+  .house-popup-name { font-size: 0.92rem; font-weight: 700; color: #e8f5e9; line-height: 1.3; }
 
-  .leaflet-control-attribution a {
-    color: #5a8a5e !important;
-  }
-
-  .leaflet-control-zoom a {
-    background: #111e16 !important;
-    color: #c8e6c9 !important;
-    border-color: #2a4030 !important;
-  }
-
-  .leaflet-control-zoom a:hover {
-    background: #1e3022 !important;
-  }
+  .leaflet-control-zoom a { background: #111e16 !important; color: #c8e6c9 !important; border-color: #2a4030 !important; }
+  .leaflet-control-zoom a:hover { background: #1e3022 !important; }
+  .leaflet-control-attribution { background: rgba(14,26,20,0.85) !important; color: #3a5a3e !important; }
+  .leaflet-control-attribution a { color: #5a8a5e !important; }
+  .leaflet-popup-content-wrapper::-webkit-scrollbar { width: 4px; }
+  .leaflet-popup-content-wrapper::-webkit-scrollbar-track { background: #0f1d13; }
+  .leaflet-popup-content-wrapper::-webkit-scrollbar-thumb { background: #2a4030; border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -215,273 +217,356 @@
     <p>SOUTH ISLAND · 順時鐘環島 · 約 1,800 KM · 4/30 – 5/13</p>
   </div>
   <div style="text-align:right">
-    <p style="color:#c8e6c9;font-size:0.75rem;">點擊圖例篩選 · 點擊標記查看詳情</p>
+    <p style="color:#c8e6c9;font-size:0.75rem;">點擊標記查看當天行程與住宿</p>
   </div>
 </header>
 
 <div class="legend" id="legend"></div>
-
 <div id="map"></div>
 
 <script>
-// ── 資料定義 ─────────────────────────────────────────────
+const NOTION = 'https://ivory-fortnight-2b4.notion.site/14-3054a18153e280c3a7fddd9f2f14e073';
+
+// ── 行程資料 ────────────────────────────────────────────
 const DAYS = [
   {
-    day: 2,
-    label: 'Day 2',
-    date: '4/30',
-    name: '基督城',
-    lat: -43.532, lng: 172.636,
-    note: '抵達 · 租車 · 採購補給',
-    nights: 1
+    day:2, label:'Day 2', date:'4/30 (四)', subtitle:'抵達首日',
+    name:'基督城 Christchurch', lat:-43.532, lng:172.636, nights:1,
+    accom:{ name:'Westfield Mall 附近公寓', area:'基督城 Riccarton 區', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Westfield+Riccarton+Christchurch' },
+    highlights:['🚗 GO Rentals 取車','🛒 Pak\'nSave 採購補給','🛒 SUNSON ASIAN FOOD MARKET 亞超','🏠 Check In 休整'],
+    schedule:[
+      {time:'14:45', event:'抵達基督城，出關＋領行李 約 1.5 hr'},
+      {time:'16:30', event:'GO Rentals 取車 約 1 hr'},
+      {time:'17:00', event:'Pak\'nSave ＋ SUNSON 採購'},
+      {time:'18:30', event:'Check In，煮晚餐休息'},
+    ]
   },
   {
-    day: 3,
-    label: 'Day 3',
-    date: '5/1',
-    name: '蒂卡波湖',
-    lat: -44.004, lng: 170.476,
-    note: '湖邊散步 · 炸魚薯條 · 夜拍星空',
-    nights: 1
+    day:3, label:'Day 3', date:'5/1 (五)', subtitle:'星空聖地',
+    name:'蒂卡波湖 Lake Tekapo', lat:-44.004, lng:170.476, nights:1,
+    accom:{ name:'Canterbury Region Lake Tekapo', area:'蒂卡波湖村內', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Lake+Tekapo+accommodation' },
+    highlights:['📍 蒂卡波湖周邊拍照','☕ The Greedy Cow Cafe','🍟 The Better Batter NZ 炸魚薯條','🛝 Tekapo Playground and Flying Fox','🛒 Four Square Tekapo 補充糧食','🌌 夜晚拍星空'],
+    schedule:[
+      {time:'11:30', event:'出發，約 3 hr 車程'},
+      {time:'13:30', event:'The Greedy Cow Cafe 約 20 分'},
+      {time:'14:00', event:'The Better Batter NZ 炸魚薯條 約 30 分'},
+      {time:'14:30', event:'蒂卡波湖周邊拍照'},
+      {time:'18:00', event:'Check In，晚餐休息'},
+      {time:'20:00', event:'湖邊拍星空 🌌'},
+    ]
   },
   {
-    day: 4,
-    label: 'Day 4',
-    date: '5/2',
-    name: '庫克山',
-    lat: -43.736, lng: 170.097,
-    note: 'Lake Pukaki · Hooker Valley 步道 10km · 鮭魚店',
-    nights: 1
+    day:4, label:'Day 4', date:'5/2 (六)', subtitle:'Hooker Valley 步道',
+    name:'庫克山 Mt Cook', lat:-43.736, lng:170.097, nights:1,
+    accom:{ name:'Canterbury Region Mt Cook Village', area:'庫克山村 (Mt Cook Village)', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Mount+Cook+Village+accommodation' },
+    highlights:['☕ The Greedy Cow Cafe 早餐','📸 Lake Pukaki Viewpoint','🥾 Hooker Valley Track 10km 來回','🐟 Mt Cook Alpine Salmon Shop'],
+    schedule:[
+      {time:'10:30', event:'出發，買早餐約 20 分'},
+      {time:'11:00', event:'Lake Pukaki Viewpoint 拍照 約 30 分'},
+      {time:'12:30', event:'White Horse Hill，步道 10km 約 3–5 hr'},
+      {time:'16:30', event:'Mt Cook Alpine Salmon Shop 買鮭魚'},
+      {time:'17:30', event:'Check In，晚餐休息'},
+    ]
   },
   {
-    day: 5,
-    label: 'Day 5–6',
-    date: '5/3–4',
-    name: '瓦納卡',
-    lat: -44.694, lng: 169.141,
-    note: '塔斯曼冰川直升機 · That Wānaka Tree · Lake Hāwea（住 2 晚）',
-    nights: 2
+    day:5, label:'Day 5–6', date:'5/3–4 (日–一)', subtitle:'住 2 晚',
+    name:'瓦納卡 Wānaka', lat:-44.694, lng:169.141, nights:2,
+    accom:{ name:'瓦納卡湖景公寓 (Booking.com)', area:'瓦納卡湖畔', nights:'2 晚', gmaps:'https://www.google.com/maps/search/Wanaka+lakefront+accommodation' },
+    highlights:['🚁 塔斯曼冰川直升機飛行＋降落冰川體驗','🌳 That Wānaka Tree 拍照','🍖 餐車 Kai Kikokiko','🏞️ Lake Hāwea Esplanade Reserve','☕ Pembroke Patisserie 早餐咖啡'],
+    schedule:[
+      {time:'10:30', event:'Day 5 出發，早餐'},
+      {time:'12:30', event:'塔斯曼冰川直升機體驗 約 40 分'},
+      {time:'15:00', event:'That Wānaka Tree 拍照'},
+      {time:'16:00', event:'餐車 Kai Kikokiko'},
+      {time:'10:50', event:'Day 6 Pembroke Patisserie 早餐'},
+      {time:'11:50', event:'Lake Hāwea Esplanade Reserve 拍照'},
+    ]
   },
   {
-    day: 7,
-    label: 'Day 7',
-    date: '5/5',
-    name: '皇后鎮',
-    lat: -45.030, lng: 168.661,
-    note: '途經箭鎮 · Skyline 纜車 · 市區閒逛（住 2 晚）',
-    nights: 2
+    day:7, label:'Day 7–8', date:'5/5–6 (二–三)', subtitle:'住 2 晚',
+    name:'箭鎮→皇后鎮 Queenstown', lat:-45.030, lng:168.661, nights:2,
+    accom:{ name:'Wynter Apartments (Booking.com)', area:'皇后鎮市區', nights:'2 晚', gmaps:'https://www.google.com/maps/search/Wynter+Apartments+Queenstown' },
+    highlights:['📍 箭鎮 Arrowtown 歷史小鎮','☕ Wolf Coffee Roasters','🍜 Saigon Kingdom 午餐（建議訂位）','🚡 Skyline Queenstown 纜車','🪂 Nzone Skydive 高空跳傘','🛥️ TSS 恩斯羅號蒸汽船','🚤 Shotover Jet 噴射快艇'],
+    schedule:[
+      {time:'10:30', event:'Day 7 出發，早餐'},
+      {time:'11:30', event:'抵達箭鎮，Wolf Coffee，閒逛 1.5 hr'},
+      {time:'13:00', event:'抵達皇后鎮，Saigon Kingdom 午餐'},
+      {time:'15:30', event:'皇后鎮市區逛'},
+      {time:'17:30', event:'Check In'},
+      {time:'Day 8', event:'活動日：Skyline ／跳傘／快艇自選'},
+    ]
   },
   {
-    day: 9,
-    label: 'Day 9',
-    date: '5/7',
-    name: 'Fox Glacier',
-    lat: -43.462, lng: 170.009,
-    note: '長途 5hr · 途經瓦納卡 · Lake Hāwea · Haast',
-    nights: 1
+    day:9, label:'Day 9', date:'5/7 (四)', subtitle:'西岸冰川，長途 5 hr',
+    name:'Fox Glacier', lat:-43.462, lng:170.009, nights:1,
+    accom:{ name:'Fox Glacier 民宿 (Airbnb)', area:'Fox Glacier 村內', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Fox+Glacier+Village+accommodation+New+Zealand' },
+    highlights:['⛽ 皇后鎮加滿油出發','☕ Lake Hāwea 買早餐咖啡','🍔 Haast Eagle Tuck Shop 午餐','🧊 抵達 Fox Glacier'],
+    schedule:[
+      {time:'10:00', event:'出發，加滿油（約 5 hr 長途）'},
+      {time:'11:30', event:'Pembroke Patisserie / Mo\'s 早餐咖啡'},
+      {time:'13:30', event:'Haast Eagle Tuck Shop 午餐休息'},
+      {time:'16:00', event:'Check In，晚餐休息'},
+    ]
   },
   {
-    day: 10,
-    label: 'Day 10',
-    date: '5/8',
-    name: 'Hokitika',
-    lat: -42.715, lng: 170.968,
-    note: 'Sunset Point 夕陽 · Glow Worm Dell 螢火蟲',
-    nights: 1
+    day:10, label:'Day 10', date:'5/8 (五)', subtitle:'螢火蟲＆夕陽',
+    name:'Hokitika', lat:-42.715, lng:170.968, nights:1,
+    accom:{ name:'West Coast Region Hokitika (Airbnb)', area:'Hokitika 市區', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Hokitika+accommodation+New+Zealand' },
+    highlights:['🍱 Katsu Sushi and Noodle House 午餐','🛒 New World 超市採購','🌅 Sunset Point 看夕陽','✨ Glow Worm Dell 看螢火蟲'],
+    schedule:[
+      {time:'11:00', event:'出發 約 2.5 hr'},
+      {time:'13:30', event:'Katsu Sushi and Noodle House 午餐 約 45 分'},
+      {time:'14:30', event:'New World 超市採購'},
+      {time:'15:30', event:'Check In'},
+      {time:'17:00', event:'Sunset Point 看夕陽'},
+      {time:'18:00', event:'Glow Worm Dell 看螢火蟲 ✨'},
+    ]
   },
   {
-    day: 11,
-    label: 'Day 11',
-    date: '5/9',
-    name: '基督城（返）',
-    lat: -43.540, lng: 172.620,
-    note: '途經 Arthur\'s Pass · Cave Stream · Castle Hill',
-    nights: 2
+    day:11, label:'Day 11', date:'5/9 (六)', subtitle:'橫越南阿爾卑斯',
+    name:'Arthur\'s Pass → 基督城', lat:-43.540, lng:172.620, nights:2,
+    accom:{ name:'基督城整套公寓 (Airbnb)', area:'基督城市區', nights:'2 晚', gmaps:'https://www.google.com/maps/search/Christchurch+city+centre+accommodation' },
+    highlights:['⛽ 出發前加滿油','🏔️ Arthur\'s Pass 國家公園','🕳️ Cave Stream Scenic Reserve','🪨 Castle Hill 石灰岩地','🏙️ 直奔基督城過夜'],
+    schedule:[
+      {time:'11:00', event:'出發，加滿油，早餐'},
+      {time:'12:20', event:'Arthur\'s Pass 停留'},
+      {time:'14:30', event:'Cave Stream ＋ Castle Hill 拍照'},
+      {time:'17:30', event:'抵達基督城，Check In'},
+    ]
   },
   {
-    day: 12,
-    label: 'Day 12',
-    date: '5/10',
-    name: '奧馬魯',
-    lat: -45.097, lng: 170.971,
-    note: 'Ōamaru Penguins 看企鵝上岸（17:20）',
-    nights: 1
+    day:12, label:'Day 12', date:'5/10 (日)', subtitle:'企鵝上岸',
+    name:'奧馬魯 Oamaru', lat:-45.097, lng:170.971, nights:1,
+    accom:{ name:'Otago Region Oamaru (Airbnb)', area:'奧馬魯市區', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Oamaru+accommodation+New+Zealand' },
+    highlights:['⛽ 基督城加滿油出發','🐧 Ōamaru Penguins 傍晚看企鵝上岸','🏘️ 維多利亞時代石灰岩街區'],
+    schedule:[
+      {time:'11:00', event:'出發 約 3 hr'},
+      {time:'13:00', event:'抵達奧馬魯，午餐，Check In'},
+      {time:'17:20', event:'🐧 Ōamaru Penguins 企鵝上岸'},
+    ]
   },
   {
-    day: 13,
-    label: 'Day 13',
-    date: '5/11',
-    name: '摩拉基→基督城',
-    lat: -45.345, lng: 170.826,
-    note: '摩拉基圓石海灘 · 回基督城',
-    nights: 0
+    day:13, label:'Day 13', date:'5/11 (一)', subtitle:'返程',
+    name:'摩拉基圓石 → 基督城', lat:-45.345, lng:170.826, nights:0,
+    accom:null,
+    highlights:['🪨 摩拉基圓石海灘 Moeraki Boulders','🦞 Kaimoana Takeaways 海鮮','🏙️ 返回基督城（原住宿）'],
+    schedule:[
+      {time:'10:00', event:'出發'},
+      {time:'10:40', event:'摩拉基圓石海灘拍照'},
+      {time:'15:00', event:'返回基督城'},
+      {time:'17:30', event:'住宿，晚餐休息'},
+    ]
   },
   {
-    day: 14,
-    label: 'Day 14–15',
-    date: '5/12–13',
-    name: '基督城（離境）',
-    lat: -43.488, lng: 172.537,
-    note: '採購伴手禮 · 還車 · 飛離',
-    nights: 0
-  }
+    day:14, label:'Day 14–15', date:'5/12–13 (二–三)', subtitle:'旅程尾聲',
+    name:'基督城 → 離境', lat:-43.488, lng:172.537, nights:0,
+    accom:null,
+    highlights:['🎁 市區採購伴手禮','⛽ 還車前加滿油','🚗 GO Rentals 還車','✈️ QF170 15:45 基督城→墨爾本'],
+    schedule:[
+      {time:'Day 14', event:'市區採購伴手禮，消耗剩餘食物'},
+      {time:'Day 15', event:'還車加滿油，前往機場'},
+      {time:'15:45', event:'✈️ 基督城起飛'},
+    ]
+  },
 ];
 
-// 每段路線的顏色（共14天分段）
+// ── 住宿標記獨立資料（位置微移以免與 Day 標記重疊）
+const ACCOMS = [
+  { dayLabel:'Day 2',   name:'Westfield Mall 附近公寓', area:'基督城 Riccarton',    nights:'1 晚', lat:-43.530, lng:172.601, gmaps:'https://www.google.com/maps/search/Westfield+Riccarton+Christchurch' },
+  { dayLabel:'Day 3',   name:'Canterbury Region 民宿',  area:'蒂卡波湖村內',       nights:'1 晚', lat:-44.007, lng:170.480, gmaps:'https://www.google.com/maps/search/Lake+Tekapo+accommodation' },
+  { dayLabel:'Day 4',   name:'Canterbury Region 民宿',  area:'庫克山村 Mt Cook',   nights:'1 晚', lat:-43.730, lng:170.100, gmaps:'https://www.google.com/maps/search/Mount+Cook+Village+accommodation' },
+  { dayLabel:'Day 5–6', name:'瓦納卡湖景公寓',          area:'瓦納卡湖畔',         nights:'2 晚', lat:-44.698, lng:169.145, gmaps:'https://www.google.com/maps/search/Wanaka+lakefront+accommodation' },
+  { dayLabel:'Day 7–8', name:'Wynter Apartments',       area:'皇后鎮市區',         nights:'2 晚', lat:-45.034, lng:168.665, gmaps:'https://www.google.com/maps/search/Wynter+Apartments+Queenstown' },
+  { dayLabel:'Day 9',   name:'Fox Glacier 民宿',        area:'Fox Glacier 村內',   nights:'1 晚', lat:-43.466, lng:170.013, gmaps:'https://www.google.com/maps/search/Fox+Glacier+Village+New+Zealand' },
+  { dayLabel:'Day 10',  name:'West Coast Hokitika 民宿', area:'Hokitika 市區',      nights:'1 晚', lat:-42.719, lng:170.972, gmaps:'https://www.google.com/maps/search/Hokitika+accommodation' },
+  { dayLabel:'Day 11–12', name:'基督城整套公寓',         area:'基督城市區',         nights:'2 晚', lat:-43.535, lng:172.638, gmaps:'https://www.google.com/maps/search/Christchurch+city+centre' },
+  { dayLabel:'Day 12',  name:'Otago Region Oamaru 民宿', area:'奧馬魯市區',        nights:'1 晚', lat:-45.100, lng:170.975, gmaps:'https://www.google.com/maps/search/Oamaru+accommodation' },
+];
+
 const COLORS = [
-  '#4ade80', // Day2→3  綠
-  '#34d399', // Day3→4  翠
-  '#22d3ee', // Day4→5  青
-  '#60a5fa', // Day5→7  藍
-  '#a78bfa', // Day7→9  紫
-  '#f472b6', // Day9→10 粉
-  '#fb923c', // Day10→11 橙
-  '#facc15', // Day11→12 黃
-  '#f87171', // Day12→13 紅
-  '#e879f9', // Day13→14 洋紅
+  '#4ade80','#34d399','#22d3ee','#60a5fa',
+  '#a78bfa','#f472b6','#fb923c','#facc15',
+  '#f87171','#e879f9','#c084fc'
 ];
 
-// 路線段定義（from index → to index，搭配顏色）
 const SEGMENTS = [
-  { from: 0, to: 1,  color: COLORS[0], label: 'Day 2→3' },
-  { from: 1, to: 2,  color: COLORS[1], label: 'Day 3→4' },
-  { from: 2, to: 3,  color: COLORS[2], label: 'Day 4→5' },
-  { from: 3, to: 4,  color: COLORS[3], label: 'Day 5→7' },
-  { from: 4, to: 5,  color: COLORS[4], label: 'Day 7→9' },
-  { from: 5, to: 6,  color: COLORS[5], label: 'Day 9→10' },
-  { from: 6, to: 7,  color: COLORS[6], label: 'Day 10→11' },
-  { from: 7, to: 8,  color: COLORS[7], label: 'Day 11→12' },
-  { from: 8, to: 9,  color: COLORS[8], label: 'Day 12→13' },
-  { from: 9, to: 10, color: COLORS[9], label: 'Day 13→14' },
+  {from:0,to:1,color:COLORS[0],label:'Day 2→3'},
+  {from:1,to:2,color:COLORS[1],label:'Day 3→4'},
+  {from:2,to:3,color:COLORS[2],label:'Day 4→5'},
+  {from:3,to:4,color:COLORS[3],label:'Day 5→7'},
+  {from:4,to:5,color:COLORS[4],label:'Day 7→9'},
+  {from:5,to:6,color:COLORS[5],label:'Day 9→10'},
+  {from:6,to:7,color:COLORS[6],label:'Day 10→11'},
+  {from:7,to:8,color:COLORS[7],label:'Day 11→12'},
+  {from:8,to:9,color:COLORS[8],label:'Day 12→13'},
+  {from:9,to:10,color:COLORS[9],label:'Day 13→14'},
 ];
 
-// ── 地圖初始化 ──────────────────────────────────────────
-const map = L.map('map', {
-  center: [-43.8, 170.5],
-  zoom: 7,
-  zoomControl: true,
-  attributionControl: true
-});
-
-// 深色底圖（Carto Dark Matter）
+// ── 地圖 ──────────────────────────────────────────────────
+const map = L.map('map', {center:[-43.8,170.5],zoom:7});
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '© OpenStreetMap contributors © CARTO',
-  subdomains: 'abcd',
-  maxZoom: 19
+  attribution:'© OpenStreetMap contributors © CARTO',
+  subdomains:'abcd', maxZoom:19
 }).addTo(map);
 
-// ── 繪製路線 ────────────────────────────────────────────
+// ── 路線 ──────────────────────────────────────────────────
 const polylines = [];
-
-SEGMENTS.forEach((seg, i) => {
-  const from = DAYS[seg.from];
-  const to   = DAYS[seg.to];
-
-  const line = L.polyline(
-    [[from.lat, from.lng], [to.lat, to.lng]],
-    {
-      color: seg.color,
-      weight: 3.5,
-      opacity: 0.85,
-      dashArray: null,
-    }
-  ).addTo(map);
-
-  // 箭頭效果：在線段中點加個方向小三角（用 marker 模擬）
-  const midLat = (from.lat + to.lat) / 2;
-  const midLng = (from.lng + to.lng) / 2;
-
-  // 計算角度
-  const dLat = to.lat - from.lat;
-  const dLng = to.lng - from.lng;
-  const angle = Math.atan2(dLng, dLat) * 180 / Math.PI;
-
-  const arrowIcon = L.divIcon({
-    html: `<div style="
-      width:0; height:0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-bottom: 10px solid ${seg.color};
-      transform: rotate(${angle}deg);
-      opacity: 0.9;
-    "></div>`,
-    className: '',
-    iconSize: [10, 10],
-    iconAnchor: [5, 5]
-  });
-
-  L.marker([midLat, midLng], { icon: arrowIcon, interactive: false }).addTo(map);
-
-  polylines.push({ line, seg });
+SEGMENTS.forEach((seg,i) => {
+  const from = DAYS[seg.from], to = DAYS[seg.to];
+  const line = L.polyline([[from.lat,from.lng],[to.lat,to.lng]],
+    {color:seg.color,weight:3.5,opacity:0.85}).addTo(map);
+  const midLat=(from.lat+to.lat)/2, midLng=(from.lng+to.lng)/2;
+  const angle=Math.atan2(to.lng-from.lng,to.lat-from.lat)*180/Math.PI;
+  L.marker([midLat,midLng],{
+    icon:L.divIcon({
+      html:`<div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:10px solid ${seg.color};transform:rotate(${angle}deg);opacity:0.9;"></div>`,
+      className:'',iconSize:[10,10],iconAnchor:[5,5]
+    }),interactive:false
+  }).addTo(map);
+  polylines.push({line,seg});
 });
 
-// ── 繪製住宿標記 ────────────────────────────────────────
-// 每個住宿點使用對應的「出發段」顏色
-const markerColors = [
-  COLORS[0],  // Day2 基督城
-  COLORS[1],  // Day3 蒂卡波
-  COLORS[2],  // Day4 庫克山
-  COLORS[3],  // Day5 瓦納卡
-  COLORS[4],  // Day7 皇后鎮
-  COLORS[5],  // Day9 Fox Glacier
-  COLORS[6],  // Day10 Hokitika
-  COLORS[7],  // Day11 基督城（返）
-  COLORS[8],  // Day12 奧馬魯
-  COLORS[9],  // Day13 摩拉基
-  '#e879f9',  // Day14 基督城（離境）
-];
-
-DAYS.forEach((d, i) => {
-  const color = markerColors[i] || '#ffffff';
+// ── Day 標記 ──────────────────────────────────────────────
+DAYS.forEach((d,i) => {
+  const color = COLORS[i] || '#ffffff';
+  const nightStr = d.nights===2?'住 2 晚':d.nights===1?'住 1 晚':'當天離開';
 
   const icon = L.divIcon({
-    className: 'day-marker',
-    html: `
-      <div class="marker-inner">
-        <div class="marker-pin" style="background:${color}22; border-color:${color}88;">
-          <span style="color:${color}">${d.label.replace('Day ','D')}</span>
-        </div>
-        <div class="marker-tail" style="background:${color}66;"></div>
+    className:'day-marker',
+    html:`<div class="marker-inner">
+      <div class="marker-pin" style="background:${color}22;border-color:${color}88;">
+        <span style="color:${color}">${d.label.replace('Day ','D')}</span>
       </div>
-    `,
-    iconSize: [50, 52],
-    iconAnchor: [25, 52],
-    popupAnchor: [0, -54]
+      <div class="marker-tail" style="background:${color}66;"></div>
+    </div>`,
+    iconSize:[50,52],iconAnchor:[25,52],popupAnchor:[0,-54]
   });
 
-  const nightStr = d.nights === 2 ? '（住 2 晚）' : d.nights === 1 ? '（住 1 晚）' : '';
+  const highlightsHTML = d.highlights.map(h=>`<li>${h}</li>`).join('');
+  const scheduleHTML   = d.schedule.map(s=>`
+    <div class="schedule-row">
+      <span class="schedule-time">${s.time}</span>
+      <span class="schedule-event">${s.event}</span>
+    </div>`).join('');
 
-  L.marker([d.lat, d.lng], { icon })
-    .bindPopup(`
-      <div class="popup-day">${d.label} · ${d.date}</div>
-      <div class="popup-title">${d.name} ${nightStr}</div>
-      <div class="popup-note">${d.note}</div>
-    `)
+  const accumHTML = d.accom ? `
+    <div class="popup-section">
+      <div class="popup-section-title">🏠 住宿</div>
+      <div class="popup-accom">
+        <div class="accom-row">
+          <span class="accom-icon">🏠</span>
+          <div class="accom-info">
+            <span class="accom-name">${d.accom.name}</span>
+            <span class="accom-nights">${d.accom.area} · ${d.accom.nights}</span>
+            <a class="accom-map-link" href="${d.accom.gmaps}" target="_blank">📍 在 Google Maps 查看大概位置 →</a>
+          </div>
+        </div>
+      </div>
+    </div>` : '';
+
+  const popupHTML = `
+    <div class="popup-header">
+      <div class="popup-day-badge" style="background:${color}25;color:${color};border:1px solid ${color}50;">
+        ${d.label} · ${nightStr}
+      </div>
+      <div class="popup-title">${d.name}</div>
+      <div class="popup-meta">${d.date} · ${d.subtitle}</div>
+    </div>
+    <div class="popup-section">
+      <div class="popup-section-title">今日重點</div>
+      <ul class="popup-highlights">${highlightsHTML}</ul>
+    </div>
+    <div class="popup-section">
+      <div class="popup-section-title">行程時間表</div>
+      <div class="popup-schedule">${scheduleHTML}</div>
+    </div>
+    ${accumHTML}
+    <a class="popup-notion-link" href="${NOTION}" target="_blank">📋 查看完整 Notion 行程 →</a>
+  `;
+
+  L.marker([d.lat,d.lng],{icon})
+    .bindPopup(popupHTML,{maxWidth:280})
     .addTo(map);
 });
 
-// ── 圖例 ────────────────────────────────────────────────
+// ── 住宿獨立標記 ──────────────────────────────────────────
+let accomMarkersVisible = true;
+const accomMarkers = [];
+
+ACCOMS.forEach(a => {
+  const icon = L.divIcon({
+    className:'house-marker',
+    html:`<div class="house-bubble" style="position:relative;">
+      <span class="house-icon">🏠</span>
+      <span class="house-name">${a.dayLabel}</span>
+    </div>`,
+    iconSize:[null,null],
+    iconAnchor:[30,28],
+    popupAnchor:[0,-30]
+  });
+
+  const popupHTML = `
+    <div class="house-popup-header">
+      <span class="house-popup-icon">🏠</span>
+      <div>
+        <div class="house-popup-day">${a.dayLabel} · ${a.nights}</div>
+        <div class="house-popup-name">${a.name}</div>
+        <div class="popup-meta" style="margin-top:2px;">${a.area}</div>
+      </div>
+    </div>
+    <div class="popup-section" style="border-bottom:none;">
+      <a class="accom-map-link" href="${a.gmaps}" target="_blank"
+        style="font-size:0.7rem;">
+        📍 在 Google Maps 查看大概位置 →
+      </a>
+    </div>
+  `;
+
+  const marker = L.marker([a.lat,a.lng],{icon,zIndexOffset:-100})
+    .bindPopup(popupHTML,{maxWidth:240})
+    .addTo(map);
+
+  accomMarkers.push(marker);
+});
+
+// ── 圖例 ──────────────────────────────────────────────────
 const legendEl = document.getElementById('legend');
 
-SEGMENTS.forEach((seg, i) => {
+SEGMENTS.forEach((seg,i) => {
   const item = document.createElement('div');
   item.className = 'legend-item';
   item.innerHTML = `
     <div class="legend-dot" style="background:${seg.color};box-shadow:0 0 6px ${seg.color}88;"></div>
-    <span class="legend-label">${seg.label}</span>
-  `;
+    <span class="legend-label">${seg.label}</span>`;
   item.addEventListener('click', () => {
     const line = polylines[i].line;
     const isOn = line.options.opacity > 0.1;
-    line.setStyle({ opacity: isOn ? 0.08 : 0.85, weight: isOn ? 1.5 : 3.5 });
-    item.classList.toggle('active', !isOn);
+    line.setStyle({opacity:isOn?0.08:0.85,weight:isOn?1.5:3.5});
+    item.classList.toggle('dimmed',isOn);
   });
   legendEl.appendChild(item);
 });
 
-// ── 自動縮放到所有點 ────────────────────────────────────
-const bounds = L.latLngBounds(DAYS.map(d => [d.lat, d.lng]));
-map.fitBounds(bounds, { padding: [40, 40] });
+// 住宿圖例切換
+const divider = document.createElement('div');
+divider.className = 'legend-divider';
+legendEl.appendChild(divider);
+
+const houseToggle = document.createElement('div');
+houseToggle.className = 'legend-house';
+houseToggle.innerHTML = `<span>🏠</span><span class="legend-label">住宿地點</span>`;
+houseToggle.addEventListener('click', () => {
+  accomMarkersVisible = !accomMarkersVisible;
+  accomMarkers.forEach(m => {
+    if (accomMarkersVisible) m.addTo(map);
+    else map.removeLayer(m);
+  });
+  houseToggle.classList.toggle('dimmed', !accomMarkersVisible);
+});
+legendEl.appendChild(houseToggle);
+
+// ── 縮放 ──────────────────────────────────────────────────
+map.fitBounds(L.latLngBounds(DAYS.map(d=>[d.lat,d.lng])),{padding:[40,40]});
 </script>
 </body>
 </html>
