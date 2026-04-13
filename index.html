@@ -22,7 +22,7 @@
   }
 
   header {
-    padding: 14px 24px;
+    padding: 12px 24px;
     background: #0e1a14;
     border-bottom: 1px solid #2a3d2e;
     display: flex;
@@ -31,31 +31,43 @@
     flex-shrink: 0;
   }
   header h1 { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.08em; color: #c8e6c9; }
-  header p  { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #6a9970; letter-spacing: 0.05em; }
+  header p  { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #6a9970; }
 
   .legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 14px;
+    gap: 5px 12px;
     padding: 8px 24px;
     background: #111e16;
     border-bottom: 1px solid #1e3022;
     flex-shrink: 0;
     align-items: center;
   }
+  .legend-divider { width: 1px; height: 16px; background: #2a4030; margin: 0 2px; }
 
   .legend-item {
-    display: flex; align-items: center; gap: 6px;
-    cursor: pointer; padding: 3px 8px; border-radius: 20px;
+    display: flex; align-items: center; gap: 5px;
+    cursor: pointer; padding: 2px 7px; border-radius: 20px;
     transition: background 0.2s; border: 1px solid transparent;
     user-select: none;
   }
   .legend-item:hover { background: #1e3022; border-color: #2a4030; }
-  .legend-item.dimmed .legend-label { opacity: 0.35; }
-  .legend-item.dimmed .legend-dot  { opacity: 0.35; }
+  .legend-item.dimmed .legend-label,
+  .legend-item.dimmed .legend-dot { opacity: 0.3; }
 
-  .legend-dot   { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .legend-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #a0c4a5; white-space: nowrap; }
+  .legend-dot   { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .legend-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #a0c4a5; white-space: nowrap; }
+
+  .legend-toggle {
+    display: flex; align-items: center; gap: 5px;
+    cursor: pointer; padding: 2px 10px; border-radius: 20px;
+    background: #1a2e1e; border: 1px solid #2a4030;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .legend-toggle:hover { background: #243824; }
+  .legend-toggle.dimmed .legend-label { opacity: 0.3; }
+  .legend-toggle .legend-dot { background: #fff; opacity: 0.6; }
 
   #map { flex: 1; width: 100%; }
 
@@ -78,7 +90,10 @@
   }
   .marker-tail { width: 2px; height: 8px; background: rgba(255,255,255,0.35); }
 
-  /* Popup */
+  /* 景點節點 */
+  .poi-marker { background: transparent; border: none; }
+
+  /* Popup 共用 */
   .leaflet-popup-content-wrapper {
     background: #0f1d13; color: #c8e6c9;
     border: 1px solid #2a4030; border-radius: 10px;
@@ -89,6 +104,7 @@
   .leaflet-popup-tip { background: #0f1d13; }
   .leaflet-popup-content { margin: 0 !important; width: 260px !important; }
 
+  /* Day popup */
   .popup-header { padding: 14px 16px 10px; border-bottom: 1px solid #1e3022; }
   .popup-day-badge {
     font-family: 'DM Mono', monospace; font-size: 0.6rem;
@@ -104,7 +120,6 @@
     font-family: 'DM Mono', monospace; font-size: 0.58rem;
     color: #5a8a5e; letter-spacing: 0.1em; margin-bottom: 6px; text-transform: uppercase;
   }
-
   .popup-highlights { list-style: none; display: flex; flex-direction: column; gap: 4px; }
   .popup-highlights li { font-size: 0.78rem; color: #b2d9b5; line-height: 1.4; }
 
@@ -116,7 +131,6 @@
   }
   .schedule-event { font-size: 0.76rem; color: #b2d9b5; line-height: 1.4; }
 
-  /* 住宿區塊 */
   .popup-accom { display: flex; flex-direction: column; gap: 6px; }
   .accom-row   { display: flex; align-items: flex-start; gap: 8px; }
   .accom-icon  { font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
@@ -141,6 +155,29 @@
   }
   .popup-notion-link:hover { color: #c8e6c9; background: #1a2e1e; }
 
+  /* 景點節點 popup */
+  .poi-popup { padding: 12px 14px; }
+  .poi-popup-type {
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 4px; opacity: 0.8;
+  }
+  .poi-popup-name { font-size: 0.9rem; font-weight: 700; color: #e8f5e9; line-height: 1.3; margin-bottom: 3px; }
+  .poi-popup-time {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    color: #7ab87f; margin-bottom: 8px;
+  }
+  .poi-map-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    color: #4ade80; text-decoration: none;
+    padding: 4px 10px; border-radius: 20px;
+    border: 1px solid #4ade8044;
+    background: #4ade8011;
+    transition: all 0.2s;
+  }
+  .poi-map-link:hover { background: #4ade8022; border-color: #4ade8088; color: #86efac; }
+
   .leaflet-control-zoom a { background: #111e16 !important; color: #c8e6c9 !important; border-color: #2a4030 !important; }
   .leaflet-control-zoom a:hover { background: #1e3022 !important; }
   .leaflet-control-attribution { background: rgba(14,26,20,0.85) !important; color: #3a5a3e !important; }
@@ -158,7 +195,7 @@
     <p>SOUTH ISLAND · 順時鐘環島 · 約 1,800 KM · 4/30 – 5/13</p>
   </div>
   <div style="text-align:right">
-    <p style="color:#c8e6c9;font-size:0.75rem;">點擊標記查看當天行程與住宿</p>
+    <p style="color:#c8e6c9;font-size:0.72rem;">點擊標記查看詳情 · 圖例可切換顯示</p>
   </div>
 </header>
 
@@ -168,6 +205,23 @@
 <script>
 const NOTION = 'https://ivory-fortnight-2b4.notion.site/14-3054a18153e280c3a7fddd9f2f14e073';
 
+const COLORS = [
+  '#4ade80','#34d399','#22d3ee','#60a5fa',
+  '#a78bfa','#f472b6','#fb923c','#facc15',
+  '#f87171','#e879f9','#c084fc'
+];
+
+// ── 景點節點類型 emoji ──────────────────────────────────
+const TYPE_ICON = {
+  '景點': '📍',
+  '餐廳': '🍽️',
+  '咖啡': '☕',
+  '活動': '🎯',
+  '購物': '🛒',
+  '自然': '🌿',
+};
+
+// ── 每天資料 ───────────────────────────────────────────
 const DAYS = [
   {
     day:2, label:'Day 2', date:'4/30 (四)', subtitle:'抵達首日',
@@ -179,13 +233,18 @@ const DAYS = [
       {time:'16:30', event:'GO Rentals 取車 約 1 hr'},
       {time:'17:00', event:'Pak\'nSave ＋ SUNSON 採購'},
       {time:'18:30', event:'Check In，煮晚餐休息'},
+    ],
+    pois:[
+      { name:'GO Rentals', type:'活動', time:'16:30', lat:-43.4762, lng:172.5541, gmaps:'https://maps.app.goo.gl/kR95NV9ShxK3W8Gy7' },
+      { name:'PAK\'nSAVE Riccarton', type:'購物', time:'17:00', lat:-43.5312, lng:172.5964, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJqRPOC_OKMW0R35qvfpSZhMc' },
+      { name:'SUNSON Asian Food Market', type:'購物', time:'17:00', lat:-43.4963, lng:172.6088, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJcYMHVACLMW0R-qxyWAcIb1U' },
     ]
   },
   {
     day:3, label:'Day 3', date:'5/1 (五)', subtitle:'星空聖地',
     name:'蒂卡波湖 Lake Tekapo', lat:-44.004, lng:170.476, nights:1,
     accom:{ name:'Canterbury Region Lake Tekapo', area:'蒂卡波湖村內', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Lake+Tekapo+accommodation' },
-    highlights:['📍 蒂卡波湖周邊拍照','☕ The Greedy Cow Cafe','🍟 The Better Batter NZ 炸魚薯條','🛝 Tekapo Playground and Flying Fox','🛒 Four Square Tekapo 補充糧食','🌌 夜晚拍星空'],
+    highlights:['📍 蒂卡波湖周邊拍照','☕ The Greedy Cow Cafe','🍟 The Better Batter NZ 炸魚薯條','🛝 Tekapo Playground and Flying Fox','🛒 Four Square Tekapo','🌌 夜晚拍星空'],
     schedule:[
       {time:'11:30', event:'出發，約 3 hr 車程'},
       {time:'13:30', event:'The Greedy Cow Cafe 約 20 分'},
@@ -193,26 +252,38 @@ const DAYS = [
       {time:'14:30', event:'蒂卡波湖周邊拍照'},
       {time:'18:00', event:'Check In，晚餐休息'},
       {time:'20:00', event:'湖邊拍星空 🌌'},
+    ],
+    pois:[
+      { name:'The Greedy Cow Cafe', type:'咖啡', time:'13:30', lat:-44.0041, lng:170.4769, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJeTXDj4B1K20RK8o4IMCRPec' },
+      { name:'The Better Batter NZ', type:'餐廳', time:'14:00', lat:-44.0018, lng:170.4730, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJeRcb1bF1K20RUneFoAI06ss' },
+      { name:'蒂卡波湖 Lake Tekapo', type:'景點', time:'14:30', lat:-44.004, lng:170.476, gmaps:'https://www.google.com/maps/search/Lake+Tekapo+New+Zealand' },
+      { name:'Tekapo Playground & Flying Fox', type:'景點', time:'14:30', lat:-44.0028, lng:170.4767, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJD50lal91K20R1Oar7eA2EdM' },
+      { name:'Four Square Tekapo', type:'購物', time:'途中', lat:-44.0027, lng:170.4759, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJV5kcowAgK20RpRXHa5mZ9cM' },
     ]
   },
   {
     day:4, label:'Day 4', date:'5/2 (六)', subtitle:'Hooker Valley 步道',
     name:'庫克山 Mt Cook', lat:-43.736, lng:170.097, nights:1,
-    accom:{ name:'Canterbury Region Mt Cook Village', area:'庫克山村 Mt Cook Village', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Mount+Cook+Village+accommodation' },
-    highlights:['☕ The Greedy Cow Cafe 早餐','📸 Lake Pukaki Viewpoint','🥾 Hooker Valley Track 10km 來回','🐟 Mt Cook Alpine Salmon Shop'],
+    accom:{ name:'Canterbury Region Mt Cook Village', area:'庫克山村', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Mount+Cook+Village+accommodation' },
+    highlights:['☕ The Greedy Cow Cafe 早餐','📸 Lake Pukaki Viewpoint','🥾 Hooker Valley Track 10km','🐟 Mt Cook Alpine Salmon Shop'],
     schedule:[
       {time:'10:30', event:'出發，買早餐約 20 分'},
       {time:'11:00', event:'Lake Pukaki Viewpoint 拍照 約 30 分'},
       {time:'12:30', event:'White Horse Hill，步道 10km 約 3–5 hr'},
       {time:'16:30', event:'Mt Cook Alpine Salmon Shop 買鮭魚'},
       {time:'17:30', event:'Check In，晚餐休息'},
+    ],
+    pois:[
+      { name:'Lake Pukaki Viewpoint', type:'景點', time:'11:00', lat:-44.1683, lng:170.2093, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJh-7gBaAbK20RndmN4X41kIY' },
+      { name:'Hooker Valley Track 起點\n(White Horse Hill)', type:'景點', time:'12:30', lat:-43.7193, lng:170.0934, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJj7fDBTRLKm0R0kaP5MApw2A' },
+      { name:'Mt Cook Alpine Salmon Shop', type:'購物', time:'16:30', lat:-44.1902, lng:170.1399, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJOWEEvwkbK20RhakpW1O2V3E' },
     ]
   },
   {
     day:5, label:'Day 5–6', date:'5/3–4 (日–一)', subtitle:'住 2 晚',
     name:'瓦納卡 Wānaka', lat:-44.694, lng:169.141, nights:2,
     accom:{ name:'瓦納卡湖景公寓 (Booking.com)', area:'瓦納卡湖畔', nights:'2 晚', gmaps:'https://www.google.com/maps/search/Wanaka+lakefront+accommodation' },
-    highlights:['🚁 塔斯曼冰川直升機飛行＋降落冰川體驗','🌳 That Wānaka Tree 拍照','🍖 餐車 Kai Kikokiko','🏞️ Lake Hāwea Esplanade Reserve','☕ Pembroke Patisserie 早餐咖啡'],
+    highlights:['🚁 塔斯曼冰川直升機飛行體驗','🌳 That Wānaka Tree','🍖 餐車 Kai Kikokiko','🏞️ Lake Hāwea Esplanade Reserve','☕ Pembroke Patisserie'],
     schedule:[
       {time:'10:30', event:'Day 5 出發，早餐'},
       {time:'12:30', event:'塔斯曼冰川直升機體驗 約 40 分'},
@@ -220,13 +291,18 @@ const DAYS = [
       {time:'16:00', event:'餐車 Kai Kikokiko'},
       {time:'10:50', event:'Day 6 Pembroke Patisserie 早餐'},
       {time:'11:50', event:'Lake Hāwea Esplanade Reserve 拍照'},
+    ],
+    pois:[
+      { name:'That Wānaka Tree', type:'景點', time:'15:00', lat:-44.6983, lng:169.1176, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJE8sfvvhF1akRtID-3q4IQDk' },
+      { name:'Kai Kikokiko 餐車', type:'餐廳', time:'16:00', lat:-44.6961, lng:169.1369, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJBZbXK1NP1akROjJMgx6Wms0' },
+      { name:'Lake Hāwea Esplanade Reserve', type:'景點', time:'11:50', lat:-44.6101, lng:169.2724, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJARVCKW9T1akRkkHjMX5lNDE' },
     ]
   },
   {
     day:7, label:'Day 7–8', date:'5/5–6 (二–三)', subtitle:'住 2 晚',
     name:'箭鎮→皇后鎮 Queenstown', lat:-45.030, lng:168.661, nights:2,
     accom:{ name:'Wynter Apartments (Booking.com)', area:'皇后鎮市區', nights:'2 晚', gmaps:'https://www.google.com/maps/search/Wynter+Apartments+Queenstown' },
-    highlights:['📍 箭鎮 Arrowtown 歷史小鎮','☕ Wolf Coffee Roasters','🍜 Saigon Kingdom 午餐（建議訂位）','🚡 Skyline Queenstown 纜車','🪂 Nzone Skydive 高空跳傘','🛥️ TSS 恩斯羅號蒸汽船','🚤 Shotover Jet 噴射快艇'],
+    highlights:['📍 箭鎮 Arrowtown','☕ Wolf Coffee Roasters','🍜 Saigon Kingdom 午餐','🚡 Skyline Queenstown','🪂 Nzone Skydive 跳傘','🚤 Shotover Jet 噴射快艇'],
     schedule:[
       {time:'10:30', event:'Day 7 出發，早餐'},
       {time:'11:30', event:'抵達箭鎮，Wolf Coffee，閒逛 1.5 hr'},
@@ -234,6 +310,12 @@ const DAYS = [
       {time:'15:30', event:'皇后鎮市區逛'},
       {time:'17:30', event:'Check In'},
       {time:'Day 8', event:'活動日：Skyline ／跳傘／快艇自選'},
+    ],
+    pois:[
+      { name:'Wolf Coffee Roasters\n(箭鎮)', type:'咖啡', time:'11:30', lat:-44.9386, lng:168.8324, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJG70xsGlLy2sRwz64uHouyHY' },
+      { name:'Saigon Kingdom\nSteamer Wharf', type:'餐廳', time:'13:00', lat:-45.0333, lng:168.6575, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJyaSjrIEd1akR_tBgnB2li6s' },
+      { name:'Skyline Queenstown', type:'活動', time:'Day 8', lat:-45.0285, lng:168.6562, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJvW5Ehngd1akRv1_byHfuLCI' },
+      { name:'Shotover Jet', type:'活動', time:'Day 8', lat:-44.9871, lng:168.6713, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJTe4Vw6Ud1akRlGHny7qc4eA' },
     ]
   },
   {
@@ -243,58 +325,78 @@ const DAYS = [
     highlights:['⛽ 皇后鎮加滿油出發','☕ Lake Hāwea 買早餐咖啡','🍔 Haast Eagle Tuck Shop 午餐','🧊 抵達 Fox Glacier'],
     schedule:[
       {time:'10:00', event:'出發，加滿油（約 5 hr 長途）'},
-      {time:'11:30', event:'Pembroke Patisserie / Mo\'s 早餐咖啡'},
+      {time:'11:30', event:'Lake Hāwea 早餐咖啡'},
       {time:'13:30', event:'Haast Eagle Tuck Shop 午餐休息'},
       {time:'16:00', event:'Check In，晚餐休息'},
+    ],
+    pois:[
+      { name:'Haast Eagle Tuck Shop', type:'餐廳', time:'13:30', lat:-43.8810, lng:169.0422, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJAa9HurN11WwRPAdJn-I0K24' },
+      { name:'Fox Glacier Village', type:'景點', time:'16:00', lat:-43.4627, lng:170.0090, gmaps:'https://www.google.com/maps/search/Fox+Glacier+village' },
     ]
   },
   {
     day:10, label:'Day 10', date:'5/8 (五)', subtitle:'螢火蟲＆夕陽',
     name:'Hokitika', lat:-42.715, lng:170.968, nights:1,
     accom:{ name:'West Coast Region Hokitika (Airbnb)', area:'Hokitika 市區', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Hokitika+accommodation' },
-    highlights:['🍱 Katsu Sushi and Noodle House 午餐','🛒 New World 超市採購','🌅 Sunset Point 看夕陽','✨ Glow Worm Dell 看螢火蟲'],
+    highlights:['🌅 Lake Matheson 早晨倒影（強烈推薦！）','🍱 Katsu Sushi 午餐','🌅 Sunset Point 看夕陽','✨ Glow Worm Dell 螢火蟲'],
     schedule:[
-      {time:'11:00', event:'出發 約 2.5 hr'},
-      {time:'13:30', event:'Katsu Sushi and Noodle House 午餐 約 45 分'},
-      {time:'14:30', event:'New World 超市採購'},
+      {time:'07:00', event:'(選) Lake Matheson 早晨倒影 約 1.5 hr'},
+      {time:'11:00', event:'出發前往 Hokitika 約 2.5 hr'},
+      {time:'13:30', event:'Katsu Sushi and Noodle House 午餐'},
       {time:'15:30', event:'Check In'},
       {time:'17:00', event:'Sunset Point 看夕陽'},
       {time:'18:00', event:'Glow Worm Dell 看螢火蟲 ✨'},
+    ],
+    pois:[
+      { name:'Lake Matheson 鏡湖', type:'景點', time:'07:00（強烈推薦）', lat:-43.4390, lng:169.9645, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJIak8otguKm0RkNFjq4bvACo' },
+      { name:'Sunset Point', type:'景點', time:'17:00', lat:-42.7210, lng:170.9532, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJK6sOuiIvL20RwWBfTHVt6u8' },
+      { name:'Glow Worm Dell', type:'景點', time:'18:00', lat:-42.7083, lng:170.9748, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJo5tvv3AvL20RAuHt6DQfEwY' },
     ]
   },
   {
     day:11, label:'Day 11', date:'5/9 (六)', subtitle:'橫越南阿爾卑斯',
     name:'Arthur\'s Pass → 基督城', lat:-43.540, lng:172.620, nights:2,
     accom:{ name:'基督城整套公寓 (Airbnb)', area:'基督城市區', nights:'2 晚', gmaps:'https://www.google.com/maps/search/Christchurch+city+centre' },
-    highlights:['⛽ 出發前加滿油','🏔️ Arthur\'s Pass 國家公園','🕳️ Cave Stream Scenic Reserve','🪨 Castle Hill 石灰岩地','🏙️ 直奔基督城過夜'],
+    highlights:['🏔️ Arthur\'s Pass 國家公園','🕳️ Cave Stream Scenic Reserve','🪨 Castle Hill / Kura Tāwhiti','🏙️ 直奔基督城過夜'],
     schedule:[
       {time:'11:00', event:'出發，加滿油，早餐'},
       {time:'12:20', event:'Arthur\'s Pass 停留'},
       {time:'14:30', event:'Cave Stream ＋ Castle Hill 拍照'},
       {time:'17:30', event:'抵達基督城，Check In'},
+    ],
+    pois:[
+      { name:'Arthur\'s Pass Village', type:'景點', time:'12:20', lat:-42.9402, lng:171.5620, gmaps:'https://www.google.com/maps/search/Arthur\'s+Pass+New+Zealand' },
+      { name:'Cave Stream Scenic Reserve', type:'景點', time:'14:30', lat:-43.1975, lng:171.7414, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJNTJpR85pLm0RJ8o4iA_iHyQ' },
+      { name:'Castle Hill / Kura Tāwhiti', type:'景點', time:'14:30', lat:-43.2296, lng:171.7162, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJMUGr__JoLm0RHv3ReMOKvw4' },
     ]
   },
   {
     day:12, label:'Day 12', date:'5/10 (日)', subtitle:'企鵝上岸',
     name:'奧馬魯 Oamaru', lat:-45.097, lng:170.971, nights:1,
     accom:{ name:'Otago Region Oamaru (Airbnb)', area:'奧馬魯市區', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Oamaru+accommodation' },
-    highlights:['⛽ 基督城加滿油出發','🐧 Ōamaru Penguins 傍晚看企鵝上岸','🏘️ 維多利亞時代石灰岩街區'],
+    highlights:['⛽ 基督城加滿油出發','🐧 Ōamaru Penguins 傍晚看企鵝上岸','🏘️ 維多利亞石灰岩街區'],
     schedule:[
       {time:'11:00', event:'出發 約 3 hr'},
       {time:'13:00', event:'抵達奧馬魯，午餐，Check In'},
       {time:'17:20', event:'🐧 Ōamaru Penguins 企鵝上岸'},
+    ],
+    pois:[
+      { name:'Ōamaru Penguins\n(企鵝上岸 17:20)', type:'景點', time:'17:20', lat:-45.1103, lng:170.9799, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJbwupBMuZKagRq8vgpSoQuVY' },
     ]
   },
   {
     day:13, label:'Day 13', date:'5/11 (一)', subtitle:'返程',
     name:'摩拉基圓石 → 基督城', lat:-45.345, lng:170.826, nights:0,
     accom:null,
-    highlights:['🪨 摩拉基圓石海灘 Moeraki Boulders','🦞 Kaimoana Takeaways 海鮮','🏙️ 返回基督城（原住宿）'],
+    highlights:['🪨 摩拉基圓石海灘 Moeraki Boulders','🦞 Kaimoana Takeaways','🏙️ 返回基督城'],
     schedule:[
       {time:'10:00', event:'出發'},
       {time:'10:40', event:'摩拉基圓石海灘拍照'},
       {time:'15:00', event:'返回基督城'},
       {time:'17:30', event:'住宿，晚餐休息'},
+    ],
+    pois:[
+      { name:'Moeraki Boulders Beach', type:'景點', time:'10:40', lat:-45.3453, lng:170.8263, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJf6zauaNxKagRI_YqVAjloW4' },
     ]
   },
   {
@@ -306,14 +408,9 @@ const DAYS = [
       {time:'Day 14', event:'市區採購伴手禮，消耗剩餘食物'},
       {time:'Day 15', event:'還車加滿油，前往機場'},
       {time:'15:45', event:'✈️ 基督城起飛'},
-    ]
+    ],
+    pois:[]
   },
-];
-
-const COLORS = [
-  '#4ade80','#34d399','#22d3ee','#60a5fa',
-  '#a78bfa','#f472b6','#fb923c','#facc15',
-  '#f87171','#e879f9','#c084fc'
 ];
 
 const SEGMENTS = [
@@ -329,13 +426,14 @@ const SEGMENTS = [
   {from:9,to:10,color:COLORS[9],label:'Day 13→14'},
 ];
 
+// ── 地圖 ──────────────────────────────────────────────────
 const map = L.map('map', {center:[-43.8,170.5],zoom:7});
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution:'© OpenStreetMap contributors © CARTO',
   subdomains:'abcd', maxZoom:19
 }).addTo(map);
 
-// ── 路線 ──
+// ── 路線 ──────────────────────────────────────────────────
 const polylines = [];
 SEGMENTS.forEach((seg,i) => {
   const from = DAYS[seg.from], to = DAYS[seg.to];
@@ -352,7 +450,51 @@ SEGMENTS.forEach((seg,i) => {
   polylines.push({line,seg});
 });
 
-// ── Day 標記 ──
+// ── 景點節點 ───────────────────────────────────────────────
+const allPoiMarkers = [];
+
+DAYS.forEach((d,i) => {
+  const color = COLORS[i] || '#ffffff';
+  if (!d.pois || d.pois.length === 0) return;
+
+  d.pois.forEach(poi => {
+    const typeIcon = TYPE_ICON[poi.type] || '📍';
+
+    const icon = L.divIcon({
+      className:'poi-marker',
+      html:`<div style="
+        width:28px; height:28px;
+        background:${color}22;
+        border:1.5px solid ${color}99;
+        border-radius:50%;
+        display:flex; align-items:center; justify-content:center;
+        font-size:0.75rem;
+        box-shadow:0 2px 8px rgba(0,0,0,0.5);
+        cursor:pointer;
+      ">${typeIcon}</div>`,
+      iconSize:[28,28],
+      iconAnchor:[14,14],
+      popupAnchor:[0,-16]
+    });
+
+    const popupHTML = `
+      <div class="poi-popup">
+        <div class="poi-popup-type" style="color:${color};">${typeIcon} ${poi.type}</div>
+        <div class="poi-popup-name">${poi.name.replace(/\n/g,'<br>')}</div>
+        <div class="poi-popup-time">🕐 ${poi.time} · ${d.label}</div>
+        <a class="poi-map-link" href="${poi.gmaps}" target="_blank">📍 在 Google Maps 開啟 →</a>
+      </div>
+    `;
+
+    const marker = L.marker([poi.lat,poi.lng],{icon,zIndexOffset:-50})
+      .bindPopup(popupHTML,{maxWidth:220})
+      .addTo(map);
+
+    allPoiMarkers.push(marker);
+  });
+});
+
+// ── Day 標記 ──────────────────────────────────────────────
 DAYS.forEach((d,i) => {
   const color = COLORS[i] || '#ffffff';
   const nightStr = d.nights===2?'住 2 晚':d.nights===1?'住 1 晚':'當天離開';
@@ -410,18 +552,20 @@ DAYS.forEach((d,i) => {
     <a class="popup-notion-link" href="${NOTION}" target="_blank">📋 查看完整 Notion 行程 →</a>
   `;
 
-  L.marker([d.lat,d.lng],{icon})
+  L.marker([d.lat,d.lng],{icon,zIndexOffset:100})
     .bindPopup(popupHTML,{maxWidth:280})
     .addTo(map);
 });
 
-// ── 圖例 ──
+// ── 圖例 ──────────────────────────────────────────────────
 const legendEl = document.getElementById('legend');
+
+// 路線圖例
 SEGMENTS.forEach((seg,i) => {
   const item = document.createElement('div');
   item.className = 'legend-item';
   item.innerHTML = `
-    <div class="legend-dot" style="background:${seg.color};box-shadow:0 0 6px ${seg.color}88;"></div>
+    <div class="legend-dot" style="background:${seg.color};box-shadow:0 0 5px ${seg.color}88;"></div>
     <span class="legend-label">${seg.label}</span>`;
   item.addEventListener('click', () => {
     const line = polylines[i].line;
@@ -432,6 +576,26 @@ SEGMENTS.forEach((seg,i) => {
   legendEl.appendChild(item);
 });
 
+// 景點節點總開關
+const divider = document.createElement('div');
+divider.className = 'legend-divider';
+legendEl.appendChild(divider);
+
+let poisVisible = true;
+const poiToggle = document.createElement('div');
+poiToggle.className = 'legend-toggle';
+poiToggle.innerHTML = `<div class="legend-dot" style="background:#fff;opacity:0.7;box-shadow:none;border:1px solid #4a7a50;"></div><span class="legend-label">景點節點</span>`;
+poiToggle.addEventListener('click', () => {
+  poisVisible = !poisVisible;
+  allPoiMarkers.forEach(m => {
+    if (poisVisible) m.addTo(map);
+    else map.removeLayer(m);
+  });
+  poiToggle.classList.toggle('dimmed', !poisVisible);
+});
+legendEl.appendChild(poiToggle);
+
+// ── 縮放 ──────────────────────────────────────────────────
 map.fitBounds(L.latLngBounds(DAYS.map(d=>[d.lat,d.lng])),{padding:[40,40]});
 </script>
 </body>
