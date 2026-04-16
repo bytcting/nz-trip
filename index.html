@@ -8,176 +8,60 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Noto Serif TC', serif;
-    background: #0e1a14;
-    color: #e8f0eb;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  header {
-    padding: 12px 24px;
-    background: #0e1a14;
-    border-bottom: 1px solid #2a3d2e;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-  }
+  body { font-family: 'Noto Serif TC', serif; background: #0e1a14; color: #e8f0eb; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+  header { padding: 12px 24px; background: #0e1a14; border-bottom: 1px solid #2a3d2e; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   header h1 { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.08em; color: #c8e6c9; }
   header p  { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #6a9970; }
-
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px 12px;
-    padding: 8px 24px;
-    background: #111e16;
-    border-bottom: 1px solid #1e3022;
-    flex-shrink: 0;
-    align-items: center;
-  }
+  .legend { display: flex; flex-wrap: wrap; gap: 5px 12px; padding: 8px 24px; background: #111e16; border-bottom: 1px solid #1e3022; flex-shrink: 0; align-items: center; }
   .legend-divider { width: 1px; height: 16px; background: #2a4030; margin: 0 2px; }
-
-  .legend-item {
-    display: flex; align-items: center; gap: 5px;
-    cursor: pointer; padding: 2px 7px; border-radius: 20px;
-    transition: background 0.2s; border: 1px solid transparent;
-    user-select: none;
-  }
+  .legend-item { display: flex; align-items: center; gap: 5px; cursor: pointer; padding: 2px 7px; border-radius: 20px; transition: background 0.2s; border: 1px solid transparent; user-select: none; }
   .legend-item:hover { background: #1e3022; border-color: #2a4030; }
-  .legend-item.dimmed .legend-label,
-  .legend-item.dimmed .legend-dot { opacity: 0.3; }
-
-  .legend-dot   { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .legend-item.dimmed .legend-label, .legend-item.dimmed .legend-dot { opacity: 0.3; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
   .legend-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #a0c4a5; white-space: nowrap; }
-
-  .legend-toggle {
-    display: flex; align-items: center; gap: 5px;
-    cursor: pointer; padding: 2px 10px; border-radius: 20px;
-    background: #1a2e1e; border: 1px solid #2a4030;
-    transition: background 0.2s;
-    user-select: none;
-  }
+  .legend-toggle { display: flex; align-items: center; gap: 5px; cursor: pointer; padding: 2px 10px; border-radius: 20px; background: #1a2e1e; border: 1px solid #2a4030; transition: background 0.2s; user-select: none; }
   .legend-toggle:hover { background: #243824; }
   .legend-toggle.dimmed .legend-label { opacity: 0.3; }
-  .legend-toggle .legend-dot { background: #fff; opacity: 0.6; }
-
   #map { flex: 1; width: 100%; }
-
-  /* Day 標記 */
   .day-marker { background: transparent; border: none; }
   .marker-inner { display: flex; flex-direction: column; align-items: center; }
-  .marker-pin {
-    width: 38px; height: 38px;
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.5);
-    border: 2px solid rgba(255,255,255,0.25);
-  }
-  .marker-pin span {
-    transform: rotate(45deg);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.52rem; font-weight: 500; color: #fff;
-    text-align: center; line-height: 1.2; white-space: nowrap;
-  }
+  .marker-pin { width: 38px; height: 38px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.25); }
+  .marker-pin span { transform: rotate(45deg); font-family: 'DM Mono', monospace; font-size: 0.52rem; font-weight: 500; color: #fff; text-align: center; line-height: 1.2; white-space: nowrap; }
   .marker-tail { width: 2px; height: 8px; background: rgba(255,255,255,0.35); }
-
-  /* 景點節點 */
   .poi-marker { background: transparent; border: none; }
-
-  /* Popup 共用 */
-  .leaflet-popup-content-wrapper {
-    background: #0f1d13; color: #c8e6c9;
-    border: 1px solid #2a4030; border-radius: 10px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.7);
-    font-family: 'Noto Serif TC', serif;
-    max-height: 70vh; overflow-y: auto;
-  }
+  .leaflet-popup-content-wrapper { background: #0f1d13; color: #c8e6c9; border: 1px solid #2a4030; border-radius: 10px; box-shadow: 0 12px 32px rgba(0,0,0,0.7); font-family: 'Noto Serif TC', serif; max-height: 70vh; overflow-y: auto; }
   .leaflet-popup-tip { background: #0f1d13; }
   .leaflet-popup-content { margin: 0 !important; width: 260px !important; }
-
-  /* Day popup */
   .popup-header { padding: 14px 16px 10px; border-bottom: 1px solid #1e3022; }
-  .popup-day-badge {
-    font-family: 'DM Mono', monospace; font-size: 0.6rem;
-    padding: 2px 8px; border-radius: 20px;
-    display: inline-block; margin-bottom: 6px; letter-spacing: 0.06em;
-  }
+  .popup-day-badge { font-family: 'DM Mono', monospace; font-size: 0.6rem; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 6px; letter-spacing: 0.06em; }
   .popup-title { font-size: 1rem; font-weight: 700; color: #e8f5e9; line-height: 1.3; }
-  .popup-meta  { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: #7ab87f; margin-top: 2px; }
-
+  .popup-meta { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: #7ab87f; margin-top: 2px; }
   .popup-section { padding: 10px 16px; border-bottom: 1px solid #1a2e1e; }
   .popup-section:last-of-type { border-bottom: none; }
-  .popup-section-title {
-    font-family: 'DM Mono', monospace; font-size: 0.58rem;
-    color: #5a8a5e; letter-spacing: 0.1em; margin-bottom: 6px; text-transform: uppercase;
-  }
+  .popup-section-title { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: #5a8a5e; letter-spacing: 0.1em; margin-bottom: 6px; text-transform: uppercase; }
   .popup-highlights { list-style: none; display: flex; flex-direction: column; gap: 4px; }
   .popup-highlights li { font-size: 0.78rem; color: #b2d9b5; line-height: 1.4; }
-
   .popup-schedule { display: flex; flex-direction: column; gap: 5px; }
-  .schedule-row  { display: flex; gap: 10px; align-items: flex-start; }
-  .schedule-time {
-    font-family: 'DM Mono', monospace; font-size: 0.64rem;
-    color: #6a9970; white-space: nowrap; padding-top: 1px; min-width: 44px;
-  }
+  .schedule-row { display: flex; gap: 10px; align-items: flex-start; }
+  .schedule-time { font-family: 'DM Mono', monospace; font-size: 0.64rem; color: #6a9970; white-space: nowrap; padding-top: 1px; min-width: 44px; }
   .schedule-event { font-size: 0.76rem; color: #b2d9b5; line-height: 1.4; }
-
   .popup-accom { display: flex; flex-direction: column; gap: 6px; }
-  .accom-row   { display: flex; align-items: flex-start; gap: 8px; }
-  .accom-icon  { font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
-  .accom-info  { display: flex; flex-direction: column; gap: 2px; }
-  .accom-name  { font-size: 0.8rem; color: #b2d9b5; line-height: 1.3; }
+  .accom-row { display: flex; align-items: flex-start; gap: 8px; }
+  .accom-icon { font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
+  .accom-info { display: flex; flex-direction: column; gap: 2px; }
+  .accom-name { font-size: 0.8rem; color: #b2d9b5; line-height: 1.3; }
   .accom-nights { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #6a9970; }
-  .accom-map-link {
-    display: inline-flex; align-items: center; gap: 3px;
-    font-family: 'DM Mono', monospace; font-size: 0.6rem;
-    color: #4ade80; text-decoration: none; margin-top: 2px;
-    transition: color 0.2s;
-  }
+  .accom-map-link { display: inline-flex; align-items: center; gap: 3px; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #4ade80; text-decoration: none; margin-top: 2px; transition: color 0.2s; }
   .accom-map-link:hover { color: #86efac; }
-
-  .popup-notion-link {
-    display: block; text-align: center;
-    font-family: 'DM Mono', monospace; font-size: 0.65rem;
-    color: #6a9970; padding: 10px; text-decoration: none;
-    border-top: 1px solid #1e3022;
-    transition: color 0.2s, background 0.2s;
-    border-radius: 0 0 10px 10px;
-  }
+  .popup-notion-link { display: block; text-align: center; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #6a9970; padding: 10px; text-decoration: none; border-top: 1px solid #1e3022; transition: color 0.2s, background 0.2s; border-radius: 0 0 10px 10px; }
   .popup-notion-link:hover { color: #c8e6c9; background: #1a2e1e; }
-
-  /* 景點節點 popup */
   .poi-popup { padding: 12px 14px; }
-  .poi-popup-type {
-    font-family: 'DM Mono', monospace; font-size: 0.55rem;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    margin-bottom: 4px; opacity: 0.8;
-  }
+  .poi-popup-type { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; opacity: 0.8; }
   .poi-popup-name { font-size: 0.9rem; font-weight: 700; color: #e8f5e9; line-height: 1.3; margin-bottom: 3px; }
-  .poi-popup-time {
-    font-family: 'DM Mono', monospace; font-size: 0.65rem;
-    color: #7ab87f; margin-bottom: 8px;
-  }
-  .poi-map-link {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-family: 'DM Mono', monospace; font-size: 0.62rem;
-    color: #4ade80; text-decoration: none;
-    padding: 4px 10px; border-radius: 20px;
-    border: 1px solid #4ade8044;
-    background: #4ade8011;
-    transition: all 0.2s;
-  }
+  .poi-popup-time { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #7ab87f; margin-bottom: 8px; }
+  .poi-map-link { display: inline-flex; align-items: center; gap: 4px; font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #4ade80; text-decoration: none; padding: 4px 10px; border-radius: 20px; border: 1px solid #4ade8044; background: #4ade8011; transition: all 0.2s; }
   .poi-map-link:hover { background: #4ade8022; border-color: #4ade8088; color: #86efac; }
-
   .leaflet-control-zoom a { background: #111e16 !important; color: #c8e6c9 !important; border-color: #2a4030 !important; }
   .leaflet-control-zoom a:hover { background: #1e3022 !important; }
   .leaflet-control-attribution { background: rgba(14,26,20,0.85) !important; color: #3a5a3e !important; }
@@ -188,7 +72,6 @@
 </style>
 </head>
 <body>
-
 <header>
   <div>
     <h1>🇳🇿 紐西蘭南島 14 日自駕</h1>
@@ -198,30 +81,13 @@
     <p style="color:#c8e6c9;font-size:0.72rem;">點擊標記查看詳情 · 圖例可切換顯示</p>
   </div>
 </header>
-
 <div class="legend" id="legend"></div>
 <div id="map"></div>
-
 <script>
 const NOTION = 'https://ivory-fortnight-2b4.notion.site/14-3054a18153e280c3a7fddd9f2f14e073';
+const COLORS = ['#4ade80','#34d399','#22d3ee','#60a5fa','#a78bfa','#f472b6','#fb923c','#facc15','#f87171','#e879f9','#c084fc'];
+const TYPE_ICON = { '景點':'📍','餐廳':'🍽️','咖啡':'☕','活動':'🎯','購物':'🛒','自然':'🌿' };
 
-const COLORS = [
-  '#4ade80','#34d399','#22d3ee','#60a5fa',
-  '#a78bfa','#f472b6','#fb923c','#facc15',
-  '#f87171','#e879f9','#c084fc'
-];
-
-// ── 景點節點類型 emoji ──────────────────────────────────
-const TYPE_ICON = {
-  '景點': '📍',
-  '餐廳': '🍽️',
-  '咖啡': '☕',
-  '活動': '🎯',
-  '購物': '🛒',
-  '自然': '🌿',
-};
-
-// ── 每天資料 ───────────────────────────────────────────
 const DAYS = [
   {
     day:2, label:'Day 2', date:'4/30 (四)', subtitle:'抵達首日',
@@ -328,6 +194,7 @@ const DAYS = [
       {time:'11:30', event:'Lake Hāwea 早餐咖啡'},
       {time:'13:30', event:'Haast Eagle Tuck Shop 午餐休息'},
       {time:'16:00', event:'Check In，晚餐休息'},
+      {time:'備注', event:'明早 8:50 冰川健行，建議早點休息'},
     ],
     pois:[
       { name:'Haast Eagle Tuck Shop', type:'餐廳', time:'13:30', lat:-43.8810, lng:169.0422, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJAa9HurN11WwRPAdJn-I0K24' },
@@ -335,22 +202,30 @@ const DAYS = [
     ]
   },
   {
-    day:10, label:'Day 10', date:'5/8 (五)', subtitle:'螢火蟲＆夕陽',
-    name:'Hokitika', lat:-42.715, lng:170.968, nights:1,
+    day:10, label:'Day 10', date:'5/8 (五)', subtitle:'冰川健行＋螢火蟲',
+    name:'Fox Glacier → Hokitika', lat:-42.715, lng:170.968, nights:1,
     accom:{ name:'West Coast Region Hokitika (Airbnb)', area:'Hokitika 市區', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Hokitika+accommodation' },
-    highlights:['🌅 Lake Matheson 早晨倒影（強烈推薦！）','🍱 Katsu Sushi 午餐','🌅 Sunset Point 看夕陽','✨ Glow Worm Dell 螢火蟲'],
+    highlights:[
+      '🧊 Fox Glacier 直升機冰川健行（已預約 8:50）',
+      '🌅 Lake Matheson 鏡湖（建議冰川後順道）',
+      '🌅 Sunset Point 看夕陽',
+      '✨ Glow Worm Dell 螢火蟲',
+    ],
     schedule:[
-      {time:'07:00', event:'(選) Lake Matheson 早晨倒影 約 1.5 hr'},
-      {time:'11:00', event:'出發前往 Hokitika 約 2.5 hr'},
-      {time:'13:30', event:'Katsu Sushi and Noodle House 午餐'},
-      {time:'15:30', event:'Check In'},
-      {time:'17:00', event:'Sunset Point 看夕陽'},
-      {time:'18:00', event:'Glow Worm Dell 看螢火蟲 ✨'},
+      {time:'08:30', event:'Fox Glacier Guiding 報到'},
+      {time:'08:50', event:'🧊 直升機冰川健行出發（全程約 4 hr）'},
+      {time:'13:00', event:'健行結束，Fox Glacier 村內午餐'},
+      {time:'14:00', event:'(選) Lake Matheson 鏡湖 約 1.5 hr'},
+      {time:'15:30', event:'出發前往 Hokitika（約 2.5 hr）'},
+      {time:'18:00', event:'抵達 Hokitika，Check In'},
+      {time:'18:30', event:'Sunset Point 看夕陽'},
+      {time:'19:30', event:'Glow Worm Dell 看螢火蟲 ✨'},
     ],
     pois:[
-      { name:'Lake Matheson 鏡湖', type:'景點', time:'07:00（強烈推薦）', lat:-43.4390, lng:169.9645, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJIak8otguKm0RkNFjq4bvACo' },
-      { name:'Sunset Point', type:'景點', time:'17:00', lat:-42.7210, lng:170.9532, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJK6sOuiIvL20RwWBfTHVt6u8' },
-      { name:'Glow Worm Dell', type:'景點', time:'18:00', lat:-42.7083, lng:170.9748, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJo5tvv3AvL20RAuHt6DQfEwY' },
+      { name:'Fox Glacier Guiding\n🧊 直升機冰川健行（已預約 8:50）', type:'活動', time:'08:50', lat:-43.4653, lng:170.0174, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJg1xryy0sKm0RWirZ4pk--4E' },
+      { name:'Lake Matheson 鏡湖\n（建議冰川後順道）', type:'景點', time:'14:00', lat:-43.4390, lng:169.9645, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJIak8otguKm0RkNFjq4bvACo' },
+      { name:'Sunset Point', type:'景點', time:'18:30', lat:-42.7210, lng:170.9532, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJK6sOuiIvL20RwWBfTHVt6u8' },
+      { name:'Glow Worm Dell', type:'景點', time:'19:30', lat:-42.7083, lng:170.9748, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJo5tvv3AvL20RAuHt6DQfEwY' },
     ]
   },
   {
@@ -426,14 +301,11 @@ const SEGMENTS = [
   {from:9,to:10,color:COLORS[9],label:'Day 13→14'},
 ];
 
-// ── 地圖 ──────────────────────────────────────────────────
 const map = L.map('map', {center:[-43.8,170.5],zoom:7});
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution:'© OpenStreetMap contributors © CARTO',
-  subdomains:'abcd', maxZoom:19
+  attribution:'© OpenStreetMap contributors © CARTO', subdomains:'abcd', maxZoom:19
 }).addTo(map);
 
-// ── 路線 ──────────────────────────────────────────────────
 const polylines = [];
 SEGMENTS.forEach((seg,i) => {
   const from = DAYS[seg.from], to = DAYS[seg.to];
@@ -450,55 +322,33 @@ SEGMENTS.forEach((seg,i) => {
   polylines.push({line,seg});
 });
 
-// ── 景點節點 ───────────────────────────────────────────────
 const allPoiMarkers = [];
-
 DAYS.forEach((d,i) => {
   const color = COLORS[i] || '#ffffff';
   if (!d.pois || d.pois.length === 0) return;
-
   d.pois.forEach(poi => {
     const typeIcon = TYPE_ICON[poi.type] || '📍';
-
     const icon = L.divIcon({
       className:'poi-marker',
-      html:`<div style="
-        width:28px; height:28px;
-        background:${color}22;
-        border:1.5px solid ${color}99;
-        border-radius:50%;
-        display:flex; align-items:center; justify-content:center;
-        font-size:0.75rem;
-        box-shadow:0 2px 8px rgba(0,0,0,0.5);
-        cursor:pointer;
-      ">${typeIcon}</div>`,
-      iconSize:[28,28],
-      iconAnchor:[14,14],
-      popupAnchor:[0,-16]
+      html:`<div style="width:28px;height:28px;background:${color}22;border:1.5px solid ${color}99;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;box-shadow:0 2px 8px rgba(0,0,0,0.5);cursor:pointer;">${typeIcon}</div>`,
+      iconSize:[28,28], iconAnchor:[14,14], popupAnchor:[0,-16]
     });
-
     const popupHTML = `
       <div class="poi-popup">
         <div class="poi-popup-type" style="color:${color};">${typeIcon} ${poi.type}</div>
         <div class="poi-popup-name">${poi.name.replace(/\n/g,'<br>')}</div>
         <div class="poi-popup-time">🕐 ${poi.time} · ${d.label}</div>
         <a class="poi-map-link" href="${poi.gmaps}" target="_blank">📍 在 Google Maps 開啟 →</a>
-      </div>
-    `;
-
+      </div>`;
     const marker = L.marker([poi.lat,poi.lng],{icon,zIndexOffset:-50})
-      .bindPopup(popupHTML,{maxWidth:220})
-      .addTo(map);
-
+      .bindPopup(popupHTML,{maxWidth:220}).addTo(map);
     allPoiMarkers.push(marker);
   });
 });
 
-// ── Day 標記 ──────────────────────────────────────────────
 DAYS.forEach((d,i) => {
   const color = COLORS[i] || '#ffffff';
   const nightStr = d.nights===2?'住 2 晚':d.nights===1?'住 1 晚':'當天離開';
-
   const icon = L.divIcon({
     className:'day-marker',
     html:`<div class="marker-inner">
@@ -509,14 +359,12 @@ DAYS.forEach((d,i) => {
     </div>`,
     iconSize:[50,52],iconAnchor:[25,52],popupAnchor:[0,-54]
   });
-
   const highlightsHTML = d.highlights.map(h=>`<li>${h}</li>`).join('');
-  const scheduleHTML   = d.schedule.map(s=>`
+  const scheduleHTML = d.schedule.map(s=>`
     <div class="schedule-row">
       <span class="schedule-time">${s.time}</span>
       <span class="schedule-event">${s.event}</span>
     </div>`).join('');
-
   const accumHTML = d.accom ? `
     <div class="popup-section">
       <div class="popup-section-title">🏠 住宿</div>
@@ -531,7 +379,6 @@ DAYS.forEach((d,i) => {
         </div>
       </div>
     </div>` : '';
-
   const popupHTML = `
     <div class="popup-header">
       <div class="popup-day-badge" style="background:${color}25;color:${color};border:1px solid ${color}50;">
@@ -551,22 +398,15 @@ DAYS.forEach((d,i) => {
     ${accumHTML}
     <a class="popup-notion-link" href="${NOTION}" target="_blank">📋 查看完整 Notion 行程 →</a>
   `;
-
   L.marker([d.lat,d.lng],{icon,zIndexOffset:100})
-    .bindPopup(popupHTML,{maxWidth:280})
-    .addTo(map);
+    .bindPopup(popupHTML,{maxWidth:280}).addTo(map);
 });
 
-// ── 圖例 ──────────────────────────────────────────────────
 const legendEl = document.getElementById('legend');
-
-// 路線圖例
 SEGMENTS.forEach((seg,i) => {
   const item = document.createElement('div');
   item.className = 'legend-item';
-  item.innerHTML = `
-    <div class="legend-dot" style="background:${seg.color};box-shadow:0 0 5px ${seg.color}88;"></div>
-    <span class="legend-label">${seg.label}</span>`;
+  item.innerHTML = `<div class="legend-dot" style="background:${seg.color};box-shadow:0 0 5px ${seg.color}88;"></div><span class="legend-label">${seg.label}</span>`;
   item.addEventListener('click', () => {
     const line = polylines[i].line;
     const isOn = line.options.opacity > 0.1;
@@ -576,7 +416,6 @@ SEGMENTS.forEach((seg,i) => {
   legendEl.appendChild(item);
 });
 
-// 景點節點總開關
 const divider = document.createElement('div');
 divider.className = 'legend-divider';
 legendEl.appendChild(divider);
@@ -584,18 +423,14 @@ legendEl.appendChild(divider);
 let poisVisible = true;
 const poiToggle = document.createElement('div');
 poiToggle.className = 'legend-toggle';
-poiToggle.innerHTML = `<div class="legend-dot" style="background:#fff;opacity:0.7;box-shadow:none;border:1px solid #4a7a50;"></div><span class="legend-label">景點節點</span>`;
+poiToggle.innerHTML = `<div class="legend-dot" style="background:#fff;opacity:0.7;border:1px solid #4a7a50;"></div><span class="legend-label">景點節點</span>`;
 poiToggle.addEventListener('click', () => {
   poisVisible = !poisVisible;
-  allPoiMarkers.forEach(m => {
-    if (poisVisible) m.addTo(map);
-    else map.removeLayer(m);
-  });
+  allPoiMarkers.forEach(m => { if (poisVisible) m.addTo(map); else map.removeLayer(m); });
   poiToggle.classList.toggle('dimmed', !poisVisible);
 });
 legendEl.appendChild(poiToggle);
 
-// ── 縮放 ──────────────────────────────────────────────────
 map.fitBounds(L.latLngBounds(DAYS.map(d=>[d.lat,d.lng])),{padding:[40,40]});
 </script>
 </body>
