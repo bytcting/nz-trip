@@ -46,12 +46,14 @@
   .schedule-row { display: flex; gap: 10px; align-items: flex-start; }
   .schedule-time { font-family: 'DM Mono', monospace; font-size: 0.64rem; color: #6a9970; white-space: nowrap; padding-top: 1px; min-width: 44px; }
   .schedule-event { font-size: 0.76rem; color: #b2d9b5; line-height: 1.4; }
-  .popup-accom { display: flex; flex-direction: column; gap: 6px; }
-  .accom-row { display: flex; align-items: flex-start; gap: 8px; }
-  .accom-icon { font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
-  .accom-info { display: flex; flex-direction: column; gap: 2px; }
-  .accom-name { font-size: 0.8rem; color: #b2d9b5; line-height: 1.3; }
-  .accom-nights { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #6a9970; }
+  .popup-accom { display: flex; flex-direction: column; gap: 5px; }
+  .accom-name { font-size: 0.8rem; color: #b2d9b5; line-height: 1.3; font-weight: 600; }
+  .accom-addr { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #6a9970; line-height: 1.4; }
+  .accom-times { display: flex; gap: 0; border: 1px solid #1e3022; border-radius: 6px; overflow: hidden; background: #0a1810; margin-top: 2px; }
+  .accom-time-block { flex: 1; padding: 6px 9px; }
+  .accom-time-block + .accom-time-block { border-left: 1px solid #1e3022; }
+  .accom-time-label { font-family: 'DM Mono', monospace; font-size: 0.48rem; color: #5a8a5e; letter-spacing: 0.1em; margin-bottom: 2px; }
+  .accom-time-value { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #c8e6c9; font-weight: 500; }
   .accom-map-link { display: inline-flex; align-items: center; gap: 3px; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #4ade80; text-decoration: none; margin-top: 2px; transition: color 0.2s; }
   .accom-map-link:hover { color: #86efac; }
   .popup-notion-link { display: block; text-align: center; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #6a9970; padding: 10px; text-decoration: none; border-top: 1px solid #1e3022; transition: color 0.2s, background 0.2s; border-radius: 0 0 10px 10px; }
@@ -92,7 +94,7 @@ const DAYS = [
   {
     day:2, label:'Day 2', date:'4/30 (四)', subtitle:'抵達首日',
     name:'基督城 Christchurch', lat:-43.532, lng:172.636, nights:1,
-    accom:{ name:'Westfield Mall 附近公寓', area:'基督城 Riccarton 區', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Westfield+Riccarton+Christchurch' },
+    accom:{ name:'3 bed home near Westfield Mall', addr:'81B Wainui Street, Christchurch 8041', checkin:'4/30  15:00', checkout:'5/1  10:00', gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJGfujv5KKMW0R3zUFFgCwV-k' },
     highlights:['🚗 GO Rentals 取車','🛒 Pak\'nSave 採購補給','🛒 SUNSON ASIAN FOOD MARKET 亞超','🏠 Check In 休整'],
     schedule:[
       {time:'14:45', event:'抵達基督城，出關＋領行李 約 1.5 hr'},
@@ -109,7 +111,7 @@ const DAYS = [
   {
     day:3, label:'Day 3', date:'5/1 (五)', subtitle:'星空聖地',
     name:'蒂卡波湖 Lake Tekapo', lat:-44.004, lng:170.476, nights:1,
-    accom:{ name:'Canterbury Region Lake Tekapo', area:'蒂卡波湖村內', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Lake+Tekapo+accommodation' },
+    accom:{ name:'Tekapo Stargazing Home', addr:'12 Jimmys Lane, Lake Tekapo 7999', checkin:'5/1  15:00', checkout:'5/2  10:00', gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJdVgVxFx1K20RHVa2nGr3E9k' },
     highlights:['📍 蒂卡波湖周邊拍照','☕ The Greedy Cow Cafe','🍟 The Better Batter NZ 炸魚薯條','🛝 Tekapo Playground and Flying Fox','🛒 Four Square Tekapo','🌌 夜晚拍星空'],
     schedule:[
       {time:'11:30', event:'出發，約 3 hr 車程'},
@@ -129,8 +131,8 @@ const DAYS = [
   },
   {
     day:4, label:'Day 4', date:'5/2 (六)', subtitle:'Hooker Valley 步道',
-    name:'庫克山 Mt Cook', lat:-43.736, lng:170.097, nights:1,
-    accom:{ name:'Canterbury Region Mt Cook Village', area:'庫克山村', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Mount+Cook+Village+accommodation' },
+    name:'庫克山 Mt Cook → Twizel', lat:-44.2519, lng:170.0921, nights:1,
+    accom:{ name:'Cosy on Cass', addr:'43 Cass Crescent, Twizel 7901', checkin:'5/2  15:00', checkout:'5/3  10:00', gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJP6pLrhjgKm0RiPDxoFFaaTw' },
     highlights:['☕ The Greedy Cow Cafe 早餐','📸 Lake Pukaki Viewpoint','🥾 Hooker Valley Track 10km','🐟 Mt Cook Alpine Salmon Shop'],
     schedule:[
       {time:'10:30', event:'出發，買早餐約 20 分'},
@@ -148,7 +150,7 @@ const DAYS = [
   {
     day:5, label:'Day 5–6', date:'5/3–4 (日–一)', subtitle:'住 2 晚',
     name:'瓦納卡 Wānaka', lat:-44.694, lng:169.141, nights:2,
-    accom:{ name:'瓦納卡湖景公寓 (Booking.com)', area:'瓦納卡湖畔', nights:'2 晚', gmaps:'https://www.google.com/maps/search/Wanaka+lakefront+accommodation' },
+    accom:{ name:'Wanaka easy-living with incredible lake views', addr:'9 McNeil Crescent, Wānaka 9305', checkin:'5/3  15:00', checkout:'5/5  11:00', gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJJdmK225P1akRIqr0LwDBUQs' },
     highlights:['🚁 塔斯曼冰川直升機飛行體驗','🌳 That Wānaka Tree','🍖 餐車 Kai Kikokiko','🏞️ Lake Hāwea Esplanade Reserve','☕ Pembroke Patisserie'],
     schedule:[
       {time:'10:30', event:'Day 5 出發，早餐'},
@@ -167,7 +169,7 @@ const DAYS = [
   {
     day:7, label:'Day 7–8', date:'5/5–6 (二–三)', subtitle:'住 2 晚',
     name:'箭鎮→皇后鎮 Queenstown', lat:-45.030, lng:168.661, nights:2,
-    accom:{ name:'Wynter Apartments (Booking.com)', area:'皇后鎮市區', nights:'2 晚', gmaps:'https://www.google.com/maps/search/Wynter+Apartments+Queenstown' },
+    accom:{ name:'Wynter Apartments', addr:'12 Hallenstein Street, Queenstown 9300', checkin:'5/5  15:00', checkout:'5/7  10:00', gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJfy_LuYgd1akR_SFwI5KTZNE' },
     highlights:['📍 箭鎮 Arrowtown','☕ Wolf Coffee Roasters','🧶 The WoolPress（icebreaker 折扣選品）箭鎮','🍜 Saigon Kingdom 午餐','🧶 icebreaker Touch Lab 皇后鎮直營','🚡 Skyline Queenstown','🪂 Nzone Skydive 跳傘','🚤 Shotover Jet 噴射快艇'],
     schedule:[
       {time:'10:30', event:'Day 7 出發，早餐'},
@@ -179,7 +181,7 @@ const DAYS = [
     ],
     pois:[
       { name:'Wolf Coffee Roasters\n(箭鎮)', type:'咖啡', time:'11:30', lat:-44.9386, lng:168.8324, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJG70xsGlLy2sRwz64uHouyHY' },
-      { name:'🧶 The WoolPress Arrowtown\nice breaker 折扣選品（⚠️ 建議先比價）', type:'購物', time:'11:30 路過', lat:-44.9386, lng:168.8323, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJ930XR34Y1akRrxyseX60jYY' },
+      { name:'🧶 The WoolPress Arrowtown\nicebreaker 折扣選品（⚠️ 建議先比價）', type:'購物', time:'11:30 路過', lat:-44.9386, lng:168.8323, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJ930XR34Y1akRrxyseX60jYY' },
       { name:'🧶 icebreaker Queenstown\nTouch Lab 直營｜9:00–19:00', type:'購物', time:'Day 7–8', lat:-45.0322, lng:168.6611, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJWeKfiVYd1akRB80BpeCM5FM' },
       { name:'Saigon Kingdom\nSteamer Wharf', type:'餐廳', time:'13:00', lat:-45.0333, lng:168.6575, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJyaSjrIEd1akR_tBgnB2li6s' },
       { name:'Skyline Queenstown', type:'活動', time:'Day 8', lat:-45.0285, lng:168.6562, gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJvW5Ehngd1akRv1_byHfuLCI' },
@@ -189,7 +191,7 @@ const DAYS = [
   {
     day:9, label:'Day 9', date:'5/7 (四)', subtitle:'西岸冰川，長途 5 hr',
     name:'Fox Glacier', lat:-43.462, lng:170.009, nights:1,
-    accom:{ name:'Fox Glacier 民宿 (Airbnb)', area:'Fox Glacier 村內', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Fox+Glacier+Village+New+Zealand' },
+    accom:{ name:'Lovely three bedroom family home', addr:'23 Pekanga Drive, Fox Glacier 7886', checkin:'5/7  14:00', checkout:'5/8  11:00', gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJhavh7CssKm0RL-A-TS6ApXI' },
     highlights:['⛽ 皇后鎮加滿油出發','☕ Lake Hāwea 買早餐咖啡','🍔 Haast Eagle Tuck Shop 午餐','🧊 抵達 Fox Glacier'],
     schedule:[
       {time:'10:00', event:'出發，加滿油（約 5 hr 長途）'},
@@ -206,7 +208,7 @@ const DAYS = [
   {
     day:10, label:'Day 10', date:'5/8 (五)', subtitle:'冰川健行＋螢火蟲',
     name:'Fox Glacier → Hokitika', lat:-42.715, lng:170.968, nights:1,
-    accom:{ name:'West Coast Region Hokitika (Airbnb)', area:'Hokitika 市區', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Hokitika+accommodation' },
+    accom:{ name:'92 ON DAVIE — A Home away from Home', addr:'92 Davie Street, Hokitika 7810', checkin:'5/8  15:00', checkout:'5/9  10:00', gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJ3VcYbmgvL20RrurT-XnlxME' },
     highlights:[
       '🧊 Fox Glacier 直升機冰川健行（已預約 8:50）',
       '🌅 Lake Matheson 鏡湖（建議冰川後順道）',
@@ -232,8 +234,8 @@ const DAYS = [
   },
   {
     day:11, label:'Day 11', date:'5/9 (六)', subtitle:'橫越南阿爾卑斯',
-    name:'Arthur\'s Pass → 基督城', lat:-43.540, lng:172.620, nights:2,
-    accom:{ name:'基督城整套公寓 (Airbnb)', area:'基督城市區', nights:'2 晚', gmaps:'https://www.google.com/maps/search/Christchurch+city+centre' },
+    name:'Arthur\'s Pass → 基督城', lat:-43.540, lng:172.620, nights:1,
+    accom:{ name:'Classic Christchurch Comfort', addr:'35 De Havilland Street, Christchurch 8042', checkin:'5/9  15:00', checkout:'5/10  10:00', gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJUwFX8t8fMm0RR4TN0alRfo8' },
     highlights:['🏔️ Arthur\'s Pass 國家公園','🕳️ Cave Stream Scenic Reserve','🪨 Castle Hill / Kura Tāwhiti','🏙️ 直奔基督城過夜'],
     schedule:[
       {time:'11:00', event:'出發，加滿油，早餐'},
@@ -250,7 +252,7 @@ const DAYS = [
   {
     day:12, label:'Day 12', date:'5/10 (日)', subtitle:'企鵝上岸',
     name:'奧馬魯 Oamaru', lat:-45.097, lng:170.971, nights:1,
-    accom:{ name:'Otago Region Oamaru (Airbnb)', area:'奧馬魯市區', nights:'1 晚', gmaps:'https://www.google.com/maps/search/Oamaru+accommodation' },
+    accom:{ name:'Home sweet, family home', addr:'13 Dalmeny Street, Oamaru 9400', checkin:'5/10  13:00', checkout:'5/11  10:00', gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJxWDMGKeXKagRWqyPDm6TWyQ' },
     highlights:['⛽ 基督城加滿油出發','🐧 Ōamaru Penguins 傍晚看企鵝上岸','🏘️ 維多利亞石灰岩街區'],
     schedule:[
       {time:'11:00', event:'出發 約 3 hr'},
@@ -265,7 +267,7 @@ const DAYS = [
     day:13, label:'Day 13', date:'5/11 (一)', subtitle:'返程',
     name:'摩拉基圓石 → 基督城', lat:-45.345, lng:170.826, nights:0,
     accom:null,
-    highlights:['🪨 摩拉基圓石海灘 Moeraki Boulders','🦞 Kaimoana Takeaways','🏙️ 返回基督城'],
+    highlights:['🪨 摩拉基圓石海灘 Moeraki Boulders','🦞 Kaimoana Takeaways','🏙️ 返回基督城（原住宿）'],
     schedule:[
       {time:'10:00', event:'出發'},
       {time:'10:40', event:'摩拉基圓石海灘拍照'},
@@ -279,7 +281,7 @@ const DAYS = [
   {
     day:14, label:'Day 14–15', date:'5/12–13 (二–三)', subtitle:'旅程尾聲',
     name:'基督城 → 離境', lat:-43.488, lng:172.537, nights:0,
-    accom:null,
+    accom:{ name:'Stylish 3BR Escape • Parking & Modern Living', addr:'266 Kilmore Street 6, Christchurch 8011', checkin:'5/11  15:00', checkout:'5/13  10:00', gmaps:'https://www.google.com/maps/place/?q=place_id:ChIJ4wCcHYiJMW0RZyo9KqSgTOM' },
     highlights:['🎁 市區採購伴手禮','🧶 icebreaker Outlet（Dress-Smart Hornby）','⛽ 還車前加滿油','🚗 GO Rentals 還車','✈️ QF170 15:45 基督城→墨爾本'],
     schedule:[
       {time:'Day 14', event:'市區採購伴手禮，消耗剩餘食物'},
@@ -335,7 +337,7 @@ DAYS.forEach((d,i) => {
     const icon = L.divIcon({
       className:'poi-marker',
       html:`<div style="width:28px;height:28px;background:${color}22;border:1.5px solid ${color}99;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;box-shadow:0 2px 8px rgba(0,0,0,0.5);cursor:pointer;">${typeIcon}</div>`,
-      iconSize:[28,28], iconAnchor:[14,14], popupAnchor:[0,-16]
+      iconSize:[28,28],iconAnchor:[14,14],popupAnchor:[0,-16]
     });
     const popupHTML = `
       <div class="poi-popup">
@@ -363,26 +365,34 @@ DAYS.forEach((d,i) => {
     </div>`,
     iconSize:[50,52],iconAnchor:[25,52],popupAnchor:[0,-54]
   });
+
   const highlightsHTML = d.highlights.map(h=>`<li>${h}</li>`).join('');
   const scheduleHTML = d.schedule.map(s=>`
     <div class="schedule-row">
       <span class="schedule-time">${s.time}</span>
       <span class="schedule-event">${s.event}</span>
     </div>`).join('');
+
   const accumHTML = d.accom ? `
     <div class="popup-section">
       <div class="popup-section-title">🏠 住宿</div>
       <div class="popup-accom">
-        <div class="accom-row">
-          <span class="accom-icon">🏠</span>
-          <div class="accom-info">
-            <span class="accom-name">${d.accom.name}</span>
-            <span class="accom-nights">${d.accom.area} · ${d.accom.nights}</span>
-            <a class="accom-map-link" href="${d.accom.gmaps}" target="_blank">📍 在 Google Maps 查看大概位置 →</a>
+        <div class="accom-name">${d.accom.name}</div>
+        <div class="accom-addr">📍 ${d.accom.addr}</div>
+        <div class="accom-times">
+          <div class="accom-time-block">
+            <div class="accom-time-label">CHECK-IN</div>
+            <div class="accom-time-value">${d.accom.checkin}</div>
+          </div>
+          <div class="accom-time-block">
+            <div class="accom-time-label">CHECK-OUT</div>
+            <div class="accom-time-value">${d.accom.checkout}</div>
           </div>
         </div>
+        <a class="accom-map-link" href="${d.accom.gmaps}" target="_blank">📍 Google Maps →</a>
       </div>
     </div>` : '';
+
   const popupHTML = `
     <div class="popup-header">
       <div class="popup-day-badge" style="background:${color}25;color:${color};border:1px solid ${color}50;">
@@ -402,6 +412,7 @@ DAYS.forEach((d,i) => {
     ${accumHTML}
     <a class="popup-notion-link" href="${NOTION}" target="_blank">📋 查看完整 Notion 行程 →</a>
   `;
+
   L.marker([d.lat,d.lng],{icon,zIndexOffset:100})
     .bindPopup(popupHTML,{maxWidth:280}).addTo(map);
 });
